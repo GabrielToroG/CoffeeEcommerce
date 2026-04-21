@@ -1,0 +1,16 @@
+.base-textarea {
+  width: 100%;
+  border: 1px solid rgba(95, 61, 46, 0.18);
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: #fff;
+  color: #26170f;
+  font: inherit;
+  resize: vertical;
+}
+
+.base-textarea:focus {
+  outline: none;
+  border-color: rgba(140, 93, 60, 0.5);
+  box-shadow: 0 0 0 3px rgba(212, 164, 116, 0.18);
+}

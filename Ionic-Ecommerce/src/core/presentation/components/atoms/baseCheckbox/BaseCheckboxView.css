@@ -1,0 +1,11 @@
+.base-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #2d1f19;
+  cursor: pointer;
+}
+
+.base-checkbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}

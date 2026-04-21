@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id
+  fullName  String
+  email     String    @unique
+  address   String
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  addresses Address[]
+  orders    Order[]
+  sessions  Session[]
+}
+
+model Address {
+  id          String   @id
+  label       String
+  fullAddress String
+  createdAt   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model Order {
+  id              String      @id
+  createdAt       DateTime    @default(now())
+  status          String
+  total           Int
+  itemsCount      Int
+  paymentMethod   String
+  deliveryAddress String
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items           OrderItem[]
+
+  @@index([userId, createdAt])
+}
+
+model OrderItem {
+  id          String @id
+  productId   String
+  productName String
+  unitPrice   Int
+  quantity    Int
+  imageUrl    String
+  orderId     String
+  order       Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Session {
+  token     String   @id
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

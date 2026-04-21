@@ -1,0 +1,28 @@
+.base-checkbox-field {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: #26170f;
+}
+
+.base-checkbox-field__control {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.base-checkbox-field__content {
+  display: grid;
+  gap: 2px;
+}
+
+.base-checkbox-field__content strong {
+  font-size: 0.95rem;
+  color: #2d1f19;
+}
+
+.base-checkbox-field__content span {
+  font-size: 0.85rem;
+  color: #6f5648;
+}
