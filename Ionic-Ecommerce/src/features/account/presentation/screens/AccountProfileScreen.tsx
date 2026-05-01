@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
 import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
@@ -29,13 +29,13 @@ export function AccountProfileScreen() {
               <span className="account-eyebrow">Cuenta</span>
               <h1>Inicia sesion para ver tu perfil</h1>
               <p>Tus datos personales apareceran aqui cuando tengas una cuenta activa.</p>
-              <button
+              <IonButton
                 type="button"
                 className="account-button account-button--primary"
                 onClick={() => history.push('/store')}
               >
                 Volver a la tienda
-              </button>
+              </IonButton>
             </section>
           ) : (
             <section className="account-panel">

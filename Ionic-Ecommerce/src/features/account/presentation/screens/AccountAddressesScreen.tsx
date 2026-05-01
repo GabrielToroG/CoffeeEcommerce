@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { BaseCheckboxFieldView } from '../../../../core/presentation/components/molecules/baseCheckboxField/BaseCheckboxFieldView';
 import { BaseTextFieldView } from '../../../../core/presentation/components/molecules/baseTextField/BaseTextFieldView';
@@ -45,13 +45,13 @@ export function AccountAddressesScreen() {
               <span className="account-eyebrow">Cuenta</span>
               <h1>Inicia sesion para ver tus direcciones</h1>
               <p>Tus direcciones guardadas apareceran aqui cuando tengas una cuenta activa.</p>
-              <button
+              <IonButton
                 type="button"
                 className="account-button account-button--primary"
                 onClick={() => history.push('/store')}
               >
                 Volver a la tienda
-              </button>
+              </IonButton>
             </section>
           ) : (
             <section className="account-panel">
@@ -93,13 +93,13 @@ export function AccountAddressesScreen() {
                   <p className="account-feedback account-feedback--success">{successMessage}</p>
                 ) : null}
 
-                <button
+                <IonButton
                   type="submit"
                   className="account-button account-button--primary"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Guardando...' : 'Agregar direccion'}
-                </button>
+                </IonButton>
               </form>
 
               <div className="account-list">
@@ -113,14 +113,14 @@ export function AccountAddressesScreen() {
                     </div>
                     <span>{address.fullAddress}</span>
                     {!address.isDefault ? (
-                      <button
+                      <IonButton
                         type="button"
                         className="account-button account-button--secondary"
                         onClick={() => void markAsDefault(address.id)}
                         disabled={isSubmitting}
                       >
                         Usar por defecto
-                      </button>
+                      </IonButton>
                     ) : null}
                   </article>
                 ))}

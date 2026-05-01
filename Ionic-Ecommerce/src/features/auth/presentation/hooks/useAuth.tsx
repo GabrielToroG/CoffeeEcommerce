@@ -1,6 +1,6 @@
 import { createContext, createElement, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { authSessionExpiredEventName } from '../../../../core/auth/authSession';
+import { authSessionExpiredEventName } from '../../../../core/auth/authSessionEvents';
 import type { AuthSessionModel } from '../../domain/entities/AuthSessionModel';
 import { localAuthRepository } from '../../data/repositories/localAuthRepository';
 import { getCurrentUserUseCase } from '../../domain/useCases/getCurrentUserUseCase';

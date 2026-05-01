@@ -5,7 +5,7 @@ import { BaseTextFieldView } from '../../../../core/presentation/components/mole
 import { useAuth } from '../hooks/useAuth';
 import './AuthHeaderPanelView.css';
 
-type AuthMode = 'login' | 'register' | 'account';
+type AuthMode = 'login' | 'register';
 
 type AuthFormState = {
   fullName: string;
@@ -23,16 +23,14 @@ const initialFormState: AuthFormState = {
 
 export function AuthHeaderPanelView() {
   const history = useHistory();
-  const { session, isLoading, isSubmitting, errorMessage, login, register, logout } = useAuth();
+  const { session, isLoading, isSubmitting, errorMessage, login, register } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<AuthMode>('login');
   const [form, setForm] = useState<AuthFormState>(initialFormState);
 
   const openPanel = (nextMode: AuthMode) => {
     setMode(nextMode);
-    if (nextMode !== 'account') {
-      setForm(initialFormState);
-    }
+    setForm(initialFormState);
     setIsOpen(true);
   };
 
@@ -78,114 +76,39 @@ export function AuthHeaderPanelView() {
     <>
       <IonButtons slot="end" className="auth-header">
         {session.isAuthenticated && session.user ? (
-          <button
+          <IonButton
             type="button"
             className="auth-header__signed"
-            onClick={() => openPanel('account')}
+            onClick={() => history.push('/account')}
           >
             <div className="auth-header__identity">
               <span className="auth-header__eyebrow">Cuenta</span>
               <strong>{session.user.fullName}</strong>
             </div>
-          </button>
+          </IonButton>
         ) : (
           <>
-            <IonButton fill="clear" onClick={() => openPanel('login')}>
+            <IonButton
+              type="button"
+              fill="clear"
+              className="auth-header__login"
+              onClick={() => openPanel('login')}
+            >
               Iniciar sesion
             </IonButton>
-            <IonButton onClick={() => openPanel('register')}>Registrarse</IonButton>
+            <IonButton
+              type="button"
+              className="auth-header__register"
+              onClick={() => openPanel('register')}
+            >
+              Registrarse
+            </IonButton>
           </>
         )}
       </IonButtons>
 
       <IonPopover isOpen={isOpen} onDidDismiss={closePanel} className="auth-popover">
-        {mode === 'account' && session.user ? (
-          <div className="auth-panel auth-panel--account">
-            <span className="auth-panel__eyebrow">Mi cuenta</span>
-            <h2>{session.user.fullName}</h2>
-            <p>{session.user.email}</p>
-
-            <nav className="auth-account__menu" aria-label="Secciones de mi cuenta">
-              <button
-                type="button"
-                className="auth-account__menu-item"
-                onClick={() => {
-                  closePanel();
-                  history.push('/orders');
-                }}
-              >
-                <div>
-                  <strong>Mis compras</strong>
-                  <span>Revisa pedidos, productos, totales y estados.</span>
-                </div>
-                <span className="auth-account__menu-count">{session.user.orders.length}</span>
-              </button>
-
-              <button
-                type="button"
-                className="auth-account__menu-item"
-                onClick={() => {
-                  closePanel();
-                  history.push('/account/addresses');
-                }}
-              >
-                <div>
-                  <strong>Mis direcciones</strong>
-                  <span>Administra tus direcciones de despacho guardadas.</span>
-                </div>
-                <span className="auth-account__menu-count">{session.user.addresses.length}</span>
-              </button>
-
-              <button
-                type="button"
-                className="auth-account__menu-item"
-                onClick={() => {
-                  closePanel();
-                  history.push('/account/profile');
-                }}
-              >
-                <div>
-                  <strong>Datos personales</strong>
-                  <span>Consulta tu nombre, correo y datos principales.</span>
-                </div>
-              </button>
-
-              {session.user.role === 'admin' ? (
-                <button
-                  type="button"
-                  className="auth-account__menu-item"
-                  onClick={() => {
-                    closePanel();
-                    history.push('/admin/catalog');
-                  }}
-                >
-                  <div>
-                    <strong>Panel admin</strong>
-                    <span>Gestiona catalogo, productos, precios y colecciones.</span>
-                  </div>
-                </button>
-              ) : null}
-            </nav>
-
-            <div className="auth-panel__actions">
-              <button type="button" className="auth-panel__secondary" onClick={closePanel}>
-                Cerrar
-              </button>
-              <button
-                type="button"
-                className="auth-panel__primary"
-                onClick={() => {
-                  void logout();
-                  closePanel();
-                }}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Saliendo...' : 'Cerrar sesion'}
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="auth-panel">
+        <div className="auth-panel">
             <span className="auth-panel__eyebrow">{mode === 'login' ? 'Accede a tu cuenta' : 'Nueva cuenta'}</span>
             <h2>{mode === 'login' ? 'Iniciar sesion' : 'Crear cuenta'}</h2>
             <p>
@@ -237,10 +160,10 @@ export function AuthHeaderPanelView() {
             {errorMessage ? <p className="auth-panel__error">{errorMessage}</p> : null}
 
             <div className="auth-panel__actions">
-              <button type="button" className="auth-panel__secondary" onClick={closePanel}>
+              <IonButton type="button" className="auth-panel__secondary" onClick={closePanel}>
                 Cancelar
-              </button>
-              <button
+              </IonButton>
+              <IonButton
                 type="button"
                 className="auth-panel__primary"
                 onClick={() => void handleSubmit()}
@@ -251,10 +174,10 @@ export function AuthHeaderPanelView() {
                   : mode === 'login'
                     ? 'Entrar'
                     : 'Crear cuenta'}
-              </button>
+              </IonButton>
             </div>
 
-            <button
+            <IonButton
               type="button"
               className="auth-panel__toggle"
               onClick={() => setMode((currentMode) => (currentMode === 'login' ? 'register' : 'login'))}
@@ -262,9 +185,8 @@ export function AuthHeaderPanelView() {
               {mode === 'login'
                 ? 'No tienes cuenta? Registrate'
                 : 'Ya tienes cuenta? Inicia sesion'}
-            </button>
-          </div>
-        )}
+            </IonButton>
+        </div>
       </IonPopover>
     </>
   );

@@ -1,10 +1,12 @@
-import { environment } from '../../../../core/config/environment';
 import {
   createAuthHeaders,
   handleUnauthorizedSession,
+} from '../../../../network/httpAuth';
+import {
   readAuthToken,
   writeAuthToken,
-} from '../../../../core/auth/authSession';
+} from '../../../../core/auth/authTokenStorage';
+import { httpClient } from '../../../../network/httpClient';
 import type { AuthUserDTO } from '../entities/AuthUserDTO';
 
 type AuthResponseDTO = {
@@ -35,7 +37,7 @@ export const authApi = {
       return null;
     }
 
-    const response = await fetch(`${environment.apiBaseUrl}/auth/me`, {
+    const response = await httpClient.request('/auth/me', {
       headers: createAuthHeaders(),
     });
 
@@ -52,7 +54,7 @@ export const authApi = {
   },
 
   async login(email: string, password: string): Promise<AuthUserDTO> {
-    const response = await fetch(`${environment.apiBaseUrl}/auth/login`, {
+    const response = await httpClient.request('/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ export const authApi = {
   },
 
   async register(fullName: string, email: string, address: string, password: string): Promise<AuthUserDTO> {
-    const response = await fetch(`${environment.apiBaseUrl}/auth/register`, {
+    const response = await httpClient.request('/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +86,7 @@ export const authApi = {
   },
 
   async addAddress(label: string, fullAddress: string, setAsDefault = false): Promise<AuthUserDTO | null> {
-    const response = await fetch(`${environment.apiBaseUrl}/auth/addresses`, {
+    const response = await httpClient.request('/auth/addresses', {
       method: 'POST',
       headers: createAuthHeaders(),
       body: JSON.stringify({
@@ -107,7 +109,7 @@ export const authApi = {
   },
 
   async setDefaultAddress(addressId: string): Promise<AuthUserDTO | null> {
-    const response = await fetch(`${environment.apiBaseUrl}/auth/addresses/${addressId}/default`, {
+    const response = await httpClient.request(`/auth/addresses/${addressId}/default`, {
       method: 'PATCH',
       headers: createAuthHeaders(),
     });
@@ -131,7 +133,7 @@ export const authApi = {
     deliveryAddress: string,
     items: AuthUserDTO['orders'][number]['items'],
   ): Promise<AuthUserDTO | null> {
-    const response = await fetch(`${environment.apiBaseUrl}/auth/orders`, {
+    const response = await httpClient.request('/auth/orders', {
       method: 'POST',
       headers: createAuthHeaders(),
       body: JSON.stringify({
@@ -156,7 +158,7 @@ export const authApi = {
   },
 
   async logout(): Promise<void> {
-    const response = await fetch(`${environment.apiBaseUrl}/auth/logout`, {
+    const response = await httpClient.request('/auth/logout', {
       method: 'POST',
       headers: createAuthHeaders(),
     });
