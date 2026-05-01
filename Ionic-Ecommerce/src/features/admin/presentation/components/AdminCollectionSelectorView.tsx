@@ -1,3 +1,4 @@
+import { IonButton } from '@ionic/react';
 import type { AdminCatalogOptionModel } from '../../domain/entities/AdminCatalogOptionModel';
 
 type AdminCollectionSelectorProps = {
@@ -19,7 +20,7 @@ export function AdminCollectionSelectorView({
           const isSelected = selectedCollectionIds.includes(collection.id);
 
           return (
-            <button
+            <IonButton
               key={collection.id}
               type="button"
               className={`admin-collection-selector__option ${
@@ -28,7 +29,7 @@ export function AdminCollectionSelectorView({
               onClick={() => onToggleCollection(collection.id)}
             >
               {collection.label}
-            </button>
+            </IonButton>
           );
         })}
       </div>

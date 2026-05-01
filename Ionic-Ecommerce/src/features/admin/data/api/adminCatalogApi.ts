@@ -1,6 +1,5 @@
-import { createAuthHeaders } from '../../../../core/auth/authSession';
-import { handleUnauthorizedSession } from '../../../../core/auth/authSession';
-import { environment } from '../../../../core/config/environment';
+import { createAuthHeaders, handleUnauthorizedSession } from '../../../../network/httpAuth';
+import { httpClient } from '../../../../network/httpClient';
 import type { AdminCatalogOptionsDTO } from '../entities/AdminCatalogOptionsDTO';
 import type { AdminProductDTO } from '../entities/AdminProductDTO';
 
@@ -22,7 +21,7 @@ async function ensureSuccess(response: Response, fallbackMessage: string) {
 
 export const adminCatalogApi = {
   async getCatalogOptions(): Promise<AdminCatalogOptionsDTO> {
-    const response = await fetch(`${environment.apiBaseUrl}/admin/catalog/options`, {
+    const response = await httpClient.request('/admin/catalog/options', {
       headers: createAuthHeaders(),
     });
 
@@ -31,7 +30,7 @@ export const adminCatalogApi = {
   },
 
   async getProducts(): Promise<AdminProductDTO[]> {
-    const response = await fetch(`${environment.apiBaseUrl}/admin/products`, {
+    const response = await httpClient.request('/admin/products', {
       headers: createAuthHeaders(),
     });
 
@@ -40,7 +39,7 @@ export const adminCatalogApi = {
   },
 
   async createProduct(product: Omit<AdminProductDTO, 'id'>): Promise<AdminProductDTO> {
-    const response = await fetch(`${environment.apiBaseUrl}/admin/products`, {
+    const response = await httpClient.request('/admin/products', {
       method: 'POST',
       headers: createAuthHeaders(),
       body: JSON.stringify(product),
@@ -51,7 +50,7 @@ export const adminCatalogApi = {
   },
 
   async updateProduct(productId: string, product: Omit<AdminProductDTO, 'id'>): Promise<AdminProductDTO> {
-    const response = await fetch(`${environment.apiBaseUrl}/admin/products/${productId}`, {
+    const response = await httpClient.request(`/admin/products/${productId}`, {
       method: 'PUT',
       headers: createAuthHeaders(),
       body: JSON.stringify(product),
@@ -62,7 +61,7 @@ export const adminCatalogApi = {
   },
 
   async deleteProduct(productId: string): Promise<void> {
-    const response = await fetch(`${environment.apiBaseUrl}/admin/products/${productId}`, {
+    const response = await httpClient.request(`/admin/products/${productId}`, {
       method: 'DELETE',
       headers: createAuthHeaders(),
     });

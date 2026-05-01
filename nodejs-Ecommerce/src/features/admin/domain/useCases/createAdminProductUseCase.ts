@@ -15,6 +15,14 @@ function validateProduct(params: SaveAdminProductParams) {
   if (params.price <= 0 || params.rating <= 0) {
     throw new HttpError(400, "Precio y rating deben ser mayores a cero.");
   }
+
+  if (params.rating > 5) {
+    throw new HttpError(400, "El rating debe estar entre 0.1 y 5.");
+  }
+
+  if (params.originalPrice !== undefined && params.originalPrice <= params.price) {
+    throw new HttpError(400, "El precio original debe ser mayor al precio actual.");
+  }
 }
 
 export async function createAdminProductUseCase(

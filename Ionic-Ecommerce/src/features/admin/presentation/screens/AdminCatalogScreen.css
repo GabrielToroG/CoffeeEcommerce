@@ -89,18 +89,31 @@
 }
 
 .admin-collection-selector__option {
-  border: 1px solid rgba(112, 86, 56, 0.18);
-  border-radius: 999px;
-  padding: 0.7rem 1rem;
-  background: #fff;
-  color: #4b3826;
+  --background: #fff;
+  --background-activated: #efe7db;
+  --background-hover: #efe7db;
+  --border-color: rgba(112, 86, 56, 0.18);
+  --border-radius: 999px;
+  --border-style: solid;
+  --border-width: 1px;
+  --box-shadow: none;
+  --color: #4b3826;
+  --padding-bottom: 0.7rem;
+  --padding-end: 1rem;
+  --padding-start: 1rem;
+  --padding-top: 0.7rem;
   font-weight: 600;
+  margin: 0;
+  min-height: auto;
+  text-transform: none;
 }
 
 .admin-collection-selector__option--selected {
-  background: #362616;
-  border-color: #362616;
-  color: #fff5ea;
+  --background: #362616;
+  --background-activated: #513b23;
+  --background-hover: #513b23;
+  --border-color: #362616;
+  --color: #fff5ea;
 }
 
 .admin-panel__actions,
@@ -112,31 +125,41 @@
 }
 
 .admin-button {
-  border: none;
-  border-radius: 999px;
-  padding: 0.85rem 1.2rem;
+  --border-radius: 999px;
+  --box-shadow: none;
+  --padding-bottom: 0.85rem;
+  --padding-end: 1.2rem;
+  --padding-start: 1.2rem;
+  --padding-top: 0.85rem;
   font-weight: 700;
-  cursor: pointer;
+  margin: 0;
+  min-height: auto;
+  text-transform: none;
 }
 
 .admin-button--primary {
-  background: #2e2013;
-  color: #fff7ef;
+  --background: #2e2013;
+  --background-activated: #4a3328;
+  --background-hover: #4a3328;
+  --color: #fff7ef;
 }
 
 .admin-button--secondary {
-  background: #ebe1d2;
-  color: #4f3b28;
+  --background: #ebe1d2;
+  --background-activated: #ded0bc;
+  --background-hover: #ded0bc;
+  --color: #4f3b28;
 }
 
 .admin-button--danger {
-  background: #8a2d1f;
-  color: #fff4f1;
+  --background: #8a2d1f;
+  --background-activated: #a23a2a;
+  --background-hover: #a23a2a;
+  --color: #fff4f1;
 }
 
-.admin-button:disabled {
+.admin-button.button-disabled {
   opacity: 0.65;
-  cursor: not-allowed;
 }
 
 .admin-feedback {
@@ -247,7 +270,7 @@
 
 @media (max-width: 640px) {
   .admin-shell {
-    padding: 6.5rem 1rem 2rem;
+    padding: 6.5rem 1rem 7rem;
   }
 
   .admin-form-grid {
@@ -260,5 +283,10 @@
 
   .admin-product-card__header {
     flex-direction: column;
+  }
+
+  .admin-button,
+  .admin-collection-selector__option {
+    min-height: 48px;
   }
 }

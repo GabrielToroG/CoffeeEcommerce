@@ -8,6 +8,7 @@ export type UpdateAdminProductParams = Partial<SaveAdminProductParams>;
 export type AdminCatalogRepository = {
   getCatalogOptions: () => Promise<AdminCatalogOptionsModel>;
   getProducts: () => Promise<AdminProductModel[]>;
+  findProductById: (productId: string) => Promise<AdminProductModel | null>;
   createProduct: (params: SaveAdminProductParams) => Promise<AdminProductModel>;
   updateProduct: (productId: string, params: UpdateAdminProductParams) => Promise<AdminProductModel | null>;
   deleteProduct: (productId: string) => Promise<boolean>;

@@ -94,6 +94,19 @@ export async function initializeDatabase() {
     ALTER TABLE sessions
       ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
 
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'storefront_products_rating_range_check'
+      ) THEN
+        ALTER TABLE storefront_products
+          ADD CONSTRAINT storefront_products_rating_range_check
+          CHECK (rating > 0 AND rating <= 5);
+      END IF;
+    END $$;
+
     UPDATE sessions
     SET expires_at = created_at + INTERVAL '24 hours'
     WHERE expires_at IS NULL;

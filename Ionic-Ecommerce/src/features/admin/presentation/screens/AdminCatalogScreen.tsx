@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
@@ -48,13 +48,13 @@ export function AdminCatalogScreen() {
               <span className="admin-eyebrow">Administracion</span>
               <h1>Necesitas una cuenta administradora</h1>
               <p>Inicia sesion con un usuario admin para gestionar productos, precios y colecciones.</p>
-              <button
+              <IonButton
                 type="button"
                 className="admin-button admin-button--primary"
                 onClick={() => history.push('/store')}
               >
                 Volver a la tienda
-              </button>
+              </IonButton>
             </section>
           ) : null}
 

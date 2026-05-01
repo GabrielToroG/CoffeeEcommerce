@@ -116,6 +116,10 @@ export const postgresAdminCatalogRepository: AdminCatalogRepository = {
     return Promise.all(productsResult.rows.map(mapAdminProductRow));
   },
 
+  async findProductById(productId: string): Promise<AdminProductModel | null> {
+    return findAdminProductById(productId);
+  },
+
   async createProduct(params: SaveAdminProductParams): Promise<AdminProductModel> {
     const productId = `product-${randomUUID()}`;
 

@@ -46,6 +46,26 @@ function mapProductToForm(product: AdminProductModel): AdminProductFormState {
   };
 }
 
+function validateProductForm(productForm: AdminProductFormState) {
+  const price = Number(productForm.price);
+  const originalPrice = productForm.originalPrice ? Number(productForm.originalPrice) : undefined;
+  const rating = Number(productForm.rating);
+
+  if (!Number.isFinite(price) || price <= 0) {
+    return 'El precio debe ser mayor a cero.';
+  }
+
+  if (!Number.isFinite(rating) || rating <= 0 || rating > 5) {
+    return 'El rating debe estar entre 0.1 y 5.';
+  }
+
+  if (originalPrice !== undefined && (!Number.isFinite(originalPrice) || originalPrice <= price)) {
+    return 'El precio original debe ser mayor al precio actual.';
+  }
+
+  return null;
+}
+
 export function useAdminCatalog() {
   const [catalogOptions, setCatalogOptions] = useState<AdminCatalogOptionsModel>({
     categories: [],
@@ -155,6 +175,12 @@ export function useAdminCatalog() {
       setErrorMessage(null);
       setSuccessMessage(null);
       const currentEditingProductName = editingProduct?.name;
+      const validationMessage = validateProductForm(productForm);
+
+      if (validationMessage) {
+        setErrorMessage(validationMessage);
+        return;
+      }
 
       const productPayload = {
         name: productForm.name.trim(),

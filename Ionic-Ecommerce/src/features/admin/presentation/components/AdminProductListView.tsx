@@ -1,3 +1,4 @@
+import { IonButton } from '@ionic/react';
 import { formatCurrency } from '../../../storefront/presentation/utils/formatCurrency';
 import type { AdminCatalogOptionModel } from '../../domain/entities/AdminCatalogOptionModel';
 import type { AdminProductModel } from '../../domain/entities/AdminProductModel';
@@ -67,21 +68,21 @@ export function AdminProductListView({
               </div>
 
               <div className="admin-product-card__actions">
-                <button
+                <IonButton
                   type="button"
                   className="admin-button admin-button--secondary"
                   onClick={() => onEditProduct(product.id)}
                 >
                   Editar
-                </button>
-                <button
+                </IonButton>
+                <IonButton
                   type="button"
                   className="admin-button admin-button--danger"
                   onClick={() => onDeleteProduct(product.id)}
                   disabled={isSubmitting}
                 >
                   Eliminar
-                </button>
+                </IonButton>
               </div>
             </div>
           </article>

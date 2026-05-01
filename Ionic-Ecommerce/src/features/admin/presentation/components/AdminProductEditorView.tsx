@@ -1,3 +1,4 @@
+import { IonButton } from '@ionic/react';
 import { BaseSelectFieldView } from '../../../../core/presentation/components/molecules/baseSelectField/BaseSelectFieldView';
 import { BaseTextFieldView } from '../../../../core/presentation/components/molecules/baseTextField/BaseTextFieldView';
 import type { AdminCatalogOptionModel } from '../../domain/entities/AdminCatalogOptionModel';
@@ -69,6 +70,7 @@ export function AdminProductEditorView({
 
         <BaseTextFieldView
           label="Precio"
+          type="number"
           value={productForm.price}
           onChange={(value) => onFieldChange('price', value)}
           placeholder="14990"
@@ -76,6 +78,7 @@ export function AdminProductEditorView({
 
         <BaseTextFieldView
           label="Precio original"
+          type="number"
           value={productForm.originalPrice}
           onChange={(value) => onFieldChange('originalPrice', value)}
           placeholder="17990"
@@ -89,7 +92,8 @@ export function AdminProductEditorView({
         />
 
         <BaseTextFieldView
-          label="Rating"
+          label="Rating (0.1 a 5)"
+          type="number"
           value={productForm.rating}
           onChange={(value) => onFieldChange('rating', value)}
           placeholder="4.8"
@@ -127,17 +131,17 @@ export function AdminProductEditorView({
       {errorMessage ? <p className="admin-feedback admin-feedback--error">{errorMessage}</p> : null}
 
       <div className="admin-panel__actions">
-        <button type="button" className="admin-button admin-button--secondary" onClick={onReset}>
+        <IonButton type="button" className="admin-button admin-button--secondary" onClick={onReset}>
           Limpiar
-        </button>
-        <button
+        </IonButton>
+        <IonButton
           type="button"
           className="admin-button admin-button--primary"
           onClick={onSubmit}
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Guardando...' : editingProduct ? 'Actualizar producto' : 'Crear producto'}
-        </button>
+        </IonButton>
       </div>
     </section>
   );
