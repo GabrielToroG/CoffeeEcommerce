@@ -1,3 +1,4 @@
+import { IonTextarea } from '@ionic/react';
 import './BaseTextareaView.css';
 
 type BaseTextareaProps = {
@@ -14,11 +15,11 @@ export function BaseTextareaView({
   rows = 4,
 }: BaseTextareaProps) {
   return (
-    <textarea
+    <IonTextarea
       className="base-textarea"
       rows={rows}
       value={value}
-      onChange={(event) => onChange(event.target.value)}
+      onIonInput={(event) => onChange(String(event.detail.value ?? ''))}
       placeholder={placeholder}
     />
   );

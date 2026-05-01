@@ -1,0 +1,70 @@
+.mobile-app-navigation {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-app-navigation {
+    display: block;
+    --background: rgba(255, 250, 244, 0.96);
+    border-top: 1px solid rgba(95, 61, 46, 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-app-navigation ion-toolbar {
+    --background: rgba(255, 250, 244, 0.96);
+    --border-color: transparent;
+    --min-height: 62px;
+    padding-bottom: max(4px, env(safe-area-inset-bottom));
+  }
+
+  .mobile-app-navigation__items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 4px 8px 2px;
+  }
+
+  .mobile-app-navigation__item {
+    --background: transparent;
+    --background-activated: rgba(95, 61, 46, 0.08);
+    --background-focused: rgba(95, 61, 46, 0.08);
+    --background-hover: rgba(95, 61, 46, 0.08);
+    --border-radius: 8px;
+    --box-shadow: none;
+    --color: #4f372c;
+    --padding-bottom: 6px;
+    --padding-end: 2px;
+    --padding-start: 2px;
+    --padding-top: 7px;
+    height: 54px;
+    margin: 0;
+    min-height: 54px;
+    text-transform: none;
+  }
+
+  .mobile-app-navigation__item::part(native) {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    line-height: 1;
+  }
+
+  .mobile-app-navigation__item ion-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mobile-app-navigation__item span {
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .mobile-app-navigation__item--active {
+    --background: #f4d7b6;
+    --background-activated: #e9c89f;
+    --background-focused: #e9c89f;
+    --background-hover: #e9c89f;
+    --color: #22160f;
+    font-weight: 900;
+  }
+}

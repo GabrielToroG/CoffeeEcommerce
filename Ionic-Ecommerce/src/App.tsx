@@ -3,6 +3,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import { AuthProvider } from './features/auth/presentation/hooks/useAuth';
 import { CartProvider } from './features/cart/presentation/hooks/useCart';
 import { AppRouter } from './core/router/AppRouter';
+import { MobileMenuView } from './core/presentation/components/organisms/mobileMenu/MobileMenuView';
+import { MobileAppNavigationView } from './core/presentation/components/organisms/mobileAppNavigation/MobileAppNavigationView';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,7 +43,9 @@ const App: React.FC = () => (
     <IonReactRouter>
       <AuthProvider>
         <CartProvider>
+          <MobileMenuView />
           <AppRouter />
+          <MobileAppNavigationView />
         </CartProvider>
       </AuthProvider>
     </IonReactRouter>

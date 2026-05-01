@@ -9,7 +9,7 @@ type BaseTextFieldProps = {
   onChange: (value: string) => void;
   className?: string;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password';
+  type?: 'text' | 'email' | 'password' | 'number';
   multiline?: boolean;
   rows?: number;
 };

@@ -1,3 +1,4 @@
+import { IonCheckbox } from '@ionic/react';
 import './BaseCheckboxView.css';
 
 type BaseCheckboxViewProps = {
@@ -12,11 +13,10 @@ export function BaseCheckboxView({
   disabled = false,
 }: BaseCheckboxViewProps) {
   return (
-    <input
+    <IonCheckbox
       className="base-checkbox"
-      type="checkbox"
       checked={checked}
-      onChange={(event) => onChange(event.target.checked)}
+      onIonChange={(event) => onChange(event.detail.checked)}
       disabled={disabled}
     />
   );

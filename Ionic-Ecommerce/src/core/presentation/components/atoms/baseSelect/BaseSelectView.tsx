@@ -1,3 +1,4 @@
+import { IonSelect, IonSelectOption } from '@ionic/react';
 import './BaseSelectView.css';
 
 export type BaseSelectViewOption = {
@@ -17,16 +18,17 @@ export function BaseSelectView({
   options,
 }: BaseSelectProps) {
   return (
-    <select
+    <IonSelect
       className="base-select"
       value={value}
-      onChange={(event) => onChange(event.target.value)}
+      interface="popover"
+      onIonChange={(event) => onChange(String(event.detail.value ?? ''))}
     >
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
+        <IonSelectOption key={option.value} value={option.value}>
           {option.label}
-        </option>
+        </IonSelectOption>
       ))}
-    </select>
+    </IonSelect>
   );
 }

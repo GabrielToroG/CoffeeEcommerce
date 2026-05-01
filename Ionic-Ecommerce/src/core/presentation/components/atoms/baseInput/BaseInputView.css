@@ -1,15 +1,21 @@
 .base-input {
   width: 100%;
-  border: 1px solid rgba(95, 61, 46, 0.18);
-  border-radius: 18px;
-  padding: 14px 16px;
-  background: #fff;
-  color: #26170f;
+  --background: #fff;
+  --border-color: rgba(95, 61, 46, 0.18);
+  --border-radius: 18px;
+  --border-width: 1px;
+  --color: #26170f;
+  --padding-bottom: 14px;
+  --padding-end: 16px;
+  --padding-start: 16px;
+  --padding-top: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
   font: inherit;
+  min-height: 51px;
 }
 
-.base-input:focus {
-  outline: none;
+.base-input.ion-focused {
   border-color: rgba(140, 93, 60, 0.5);
   box-shadow: 0 0 0 3px rgba(212, 164, 116, 0.18);
 }

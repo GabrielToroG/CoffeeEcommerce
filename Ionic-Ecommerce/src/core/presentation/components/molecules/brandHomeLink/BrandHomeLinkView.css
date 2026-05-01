@@ -1,0 +1,11 @@
+.brand-home-link__menu-button {
+  display: inline-flex;
+  margin: 0;
+  color: #2d1f19;
+}
+
+@media (min-width: 768px) {
+  .brand-home-link__menu-button {
+    display: none;
+  }
+}

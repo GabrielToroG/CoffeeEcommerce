@@ -1,7 +1,11 @@
 .base-checkbox {
   width: 18px;
   height: 18px;
-  accent-color: #2d1f19;
+  --border-color: rgba(95, 61, 46, 0.3);
+  --border-color-checked: #2d1f19;
+  --border-radius: 5px;
+  --checkbox-background-checked: #2d1f19;
+  --checkmark-color: #fff;
   cursor: pointer;
 }
 

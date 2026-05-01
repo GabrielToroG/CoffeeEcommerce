@@ -1,10 +1,11 @@
+import { IonInput } from '@ionic/react';
 import './BaseInputView.css';
 
 type BaseInputProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password';
+  type?: 'text' | 'email' | 'password' | 'number';
 };
 
 export function BaseInputView({
@@ -14,11 +15,11 @@ export function BaseInputView({
   type = 'text',
 }: BaseInputProps) {
   return (
-    <input
+    <IonInput
       className="base-input"
       type={type}
       value={value}
-      onChange={(event) => onChange(event.target.value)}
+      onIonInput={(event) => onChange(String(event.detail.value ?? ''))}
       placeholder={placeholder}
     />
   );
