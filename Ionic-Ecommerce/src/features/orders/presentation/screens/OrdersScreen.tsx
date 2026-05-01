@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
 import { useAuth } from '../../../auth/presentation/hooks/useAuth';
@@ -36,13 +36,13 @@ export function OrdersScreen() {
               <span className="orders-eyebrow">Pedidos</span>
               <h1>Inicia sesion para ver tus compras</h1>
               <p>Tu historial de pedidos aparecera aqui cuando tengas una cuenta activa.</p>
-              <button
+              <IonButton
                 type="button"
                 className="orders-button orders-button--primary"
                 onClick={() => history.push('/store')}
               >
                 Volver a la tienda
-              </button>
+              </IonButton>
             </section>
           ) : null}
 
@@ -121,13 +121,13 @@ export function OrdersScreen() {
                     <strong>{user.addresses.length}</strong>
                   </div>
                 </div>
-                <button
+                <IonButton
                   type="button"
                   className="orders-button orders-button--secondary"
                   onClick={() => history.push('/store')}
                 >
                   Seguir comprando
-                </button>
+                </IonButton>
               </aside>
             </div>
           ) : null}
