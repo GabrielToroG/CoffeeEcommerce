@@ -1,3 +1,4 @@
+import { IonButton } from '@ionic/react';
 import type { CartSummaryModel } from '../../domain/entities/CartSummaryModel';
 
 type CartSummaryProps = {
@@ -46,23 +47,23 @@ export function CartSummaryView({
                   <span>{formatCurrency(item.product.price)} c/u</span>
                   <div className="cart-summary__item-footer">
                     <div className="cart-summary__stepper" aria-label={`Cantidad de ${item.product.name}`}>
-                      <button
+                      <IonButton
                         type="button"
                         className="cart-summary__stepper-button"
                         onClick={() => onRemoveProduct(item.product.id)}
                         aria-label={`Quitar una unidad de ${item.product.name}`}
                       >
                         -
-                      </button>
+                      </IonButton>
                       <span>{item.quantity}</span>
-                      <button
+                      <IonButton
                         type="button"
                         className="cart-summary__stepper-button"
                         onClick={() => onAddProduct(item.product.id)}
                         aria-label={`Agregar otra unidad de ${item.product.name}`}
                       >
                         +
-                      </button>
+                      </IonButton>
                     </div>
                     <strong>{formatCurrency(item.product.price * item.quantity)}</strong>
                   </div>
@@ -76,14 +77,14 @@ export function CartSummaryView({
               <span>Subtotal</span>
               <strong>{formatCurrency(cartSummary.subtotal)}</strong>
             </div>
-            <button
+            <IonButton
               type="button"
               className="storefront-button storefront-button--primary"
               onClick={onCheckout}
               disabled={cartSummary.totalItems === 0}
             >
               Continuar compra
-            </button>
+            </IonButton>
           </div>
         </>
       ) : (

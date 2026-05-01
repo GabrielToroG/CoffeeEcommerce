@@ -8,4 +8,13 @@ export type StorefrontProductModel = {
   imageUrl: string;
   categoryId: string;
   rating: number;
+  origin: string;
+  grindType: string;
+  roastLevel: string;
+  tastingNotes: string[];
+  brewMethods: string[];
+  intensity: number;
+  stockLabel: string;
+  commercialBadges: string[];
+  freeShippingEligible: boolean;
 };

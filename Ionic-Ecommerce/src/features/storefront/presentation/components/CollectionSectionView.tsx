@@ -1,5 +1,6 @@
 import type { StorefrontCollectionModel } from '../../domain/entities/StorefrontCollectionModel';
 import type { StorefrontProductModel } from '../../domain/entities/StorefrontProductModel';
+import { matchesIntensityRange } from '../utils/matchesIntensityRange';
 import { ProductCardView } from './ProductCardView';
 
 type CollectionSectionProps = {
@@ -8,7 +9,11 @@ type CollectionSectionProps = {
   onAddToCart: (product: StorefrontProductModel) => void;
   onAddAnother: (productId: string) => void;
   onRemoveFromCart: (productId: string) => void;
+  onViewProduct: (productId: string) => void;
   selectedCategoryId: string | null;
+  selectedBrewMethod: string | null;
+  selectedRoastLevel: string | null;
+  selectedIntensityRange: string | null;
 };
 
 export function CollectionSectionView({
@@ -17,13 +22,25 @@ export function CollectionSectionView({
   onAddToCart,
   onAddAnother,
   onRemoveFromCart,
+  onViewProduct,
   selectedCategoryId,
+  selectedBrewMethod,
+  selectedRoastLevel,
+  selectedIntensityRange,
 }: CollectionSectionProps) {
-  const hasVisibleProducts =
-    selectedCategoryId === null ||
-    collection.products.some((product) => product.categoryId === selectedCategoryId);
+  const visibleProducts = collection.products.filter((product) => {
+    const matchesCategory =
+      selectedCategoryId === null || product.categoryId === selectedCategoryId;
+    const matchesBrewMethod =
+      selectedBrewMethod === null || product.brewMethods.includes(selectedBrewMethod);
+    const matchesRoastLevel =
+      selectedRoastLevel === null || product.roastLevel === selectedRoastLevel;
+    const matchesIntensity = matchesIntensityRange(product.intensity, selectedIntensityRange);
 
-  if (!hasVisibleProducts) {
+    return matchesCategory && matchesBrewMethod && matchesRoastLevel && matchesIntensity;
+  });
+
+  if (visibleProducts.length === 0) {
     return null;
   }
 
@@ -37,16 +54,11 @@ export function CollectionSectionView({
         </div>
       </div>
 
-      <div className={`product-grid ${selectedCategoryId !== null ? 'product-grid--filtered' : ''}`}>
-        {collection.products.map((product) => (
+      <div className="product-grid">
+        {visibleProducts.map((product) => (
           <div
             key={product.id}
-            className={`product-grid__item ${
-              selectedCategoryId !== null && product.categoryId !== selectedCategoryId
-                ? 'product-grid__item--hidden'
-                : ''
-            }`}
-            aria-hidden={selectedCategoryId !== null && product.categoryId !== selectedCategoryId}
+            className="product-grid__item"
           >
             <ProductCardView
               product={product}
@@ -54,6 +66,7 @@ export function CollectionSectionView({
               onAddToCart={onAddToCart}
               onAddAnother={onAddAnother}
               onRemoveFromCart={onRemoveFromCart}
+              onViewProduct={onViewProduct}
             />
           </div>
         ))}

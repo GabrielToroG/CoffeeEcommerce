@@ -1,9 +1,11 @@
+import { IonButton } from '@ionic/react';
 import type { CartSummaryModel } from '../../domain/entities/CartSummaryModel';
 import './CartHeaderSummaryView.css';
 
 type CartHeaderSummaryProps = {
   cartSummary: CartSummaryModel;
   onCheckout: () => void;
+  className?: string;
 };
 
 function formatCurrency(value: number) {
@@ -17,9 +19,13 @@ function formatCurrency(value: number) {
 export function CartHeaderSummaryView({
   cartSummary,
   onCheckout,
+  className = '',
 }: CartHeaderSummaryProps) {
   return (
-    <section className="cart-header-summary" aria-label="Resumen de carrito">
+    <section
+      className={`cart-header-summary ${className}`.trim()}
+      aria-label="Resumen de carrito"
+    >
       <div className="cart-header-summary__copy">
         <span className="cart-header-summary__eyebrow">Tu carrito</span>
         <div className="cart-header-summary__meta">
@@ -28,14 +34,14 @@ export function CartHeaderSummaryView({
         </div>
       </div>
 
-      <button
+      <IonButton
         type="button"
         className="cart-header-summary__button"
         onClick={onCheckout}
         disabled={cartSummary.totalItems === 0}
       >
         {cartSummary.totalItems === 0 ? 'Agrega productos' : 'Continuar compra'}
-      </button>
+      </IonButton>
     </section>
   );
 }

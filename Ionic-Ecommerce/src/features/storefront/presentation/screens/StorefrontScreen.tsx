@@ -3,8 +3,10 @@ import {
   IonHeader,
   IonPage,
   IonSpinner,
+  IonToast,
   IonToolbar,
 } from '@ionic/react';
+import { useState } from 'react';
 import type { CartProductModel } from '../../../cart/domain/entities/CartProductModel';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
 import { CartHeaderSummaryView } from '../../../cart/presentation/components/CartHeaderSummaryView';
@@ -13,18 +15,28 @@ import { useCart } from '../../../cart/presentation/hooks/useCart';
 import type { StorefrontProductModel } from '../../domain/entities/StorefrontProductModel';
 import { useHistory } from 'react-router-dom';
 import { useStorefront } from '../hooks/useStorefront';
-import { CategoryStripView } from '../components/CategoryStripView';
 import { CollectionSectionView } from '../components/CollectionSectionView';
+import { ProductFiltersView } from '../components/ProductFiltersView';
+import { matchesIntensityRange } from '../utils/matchesIntensityRange';
 import './StorefrontScreen.css';
+
+const intensityRanges = ['1-3', '4-6', '7-10'];
 
 export function StorefrontScreen() {
   const history = useHistory();
+  const [cartFeedbackMessage, setCartFeedbackMessage] = useState('');
   const {
     storefrontContent,
     isLoading,
     errorMessage,
     selectedCategoryId,
+    selectedBrewMethod,
+    selectedRoastLevel,
+    selectedIntensityRange,
     selectCategory,
+    selectBrewMethod,
+    selectRoastLevel,
+    selectIntensityRange,
   } = useStorefront();
   const {
     cartSummary,
@@ -43,6 +55,7 @@ export function StorefrontScreen() {
     };
 
     addProductToCart(cartProduct);
+    setCartFeedbackMessage(`${product.name} agregado al carrito`);
   };
 
   const handleCheckout = () => {
@@ -53,11 +66,34 @@ export function StorefrontScreen() {
     history.push('/checkout');
   };
 
+  const handleViewProduct = (productId: string) => {
+    history.push(`/store/products/${productId}`);
+  };
+
+  const allProducts =
+    storefrontContent?.collections.flatMap((collection) => collection.products) ?? [];
+
+  const brewMethods = Array.from(
+    new Set(allProducts.flatMap((product) => product.brewMethods)),
+  );
+
+  const roastLevels = Array.from(
+    new Set(allProducts.map((product) => product.roastLevel)),
+  );
+
   const hasMatchingProducts =
     storefrontContent?.collections.some((collection) =>
-      selectedCategoryId === null
-        ? collection.products.length > 0
-        : collection.products.some((product) => product.categoryId === selectedCategoryId),
+      collection.products.some((product) => {
+        const matchesCategory =
+          selectedCategoryId === null || product.categoryId === selectedCategoryId;
+        const matchesBrewMethod =
+          selectedBrewMethod === null || product.brewMethods.includes(selectedBrewMethod);
+        const matchesRoastLevel =
+          selectedRoastLevel === null || product.roastLevel === selectedRoastLevel;
+        const matchesIntensity = matchesIntensityRange(product.intensity, selectedIntensityRange);
+
+        return matchesCategory && matchesBrewMethod && matchesRoastLevel && matchesIntensity;
+      }),
     ) ?? false;
 
   return (
@@ -71,6 +107,7 @@ export function StorefrontScreen() {
           <CartHeaderSummaryView
             cartSummary={cartSummary}
             onCheckout={handleCheckout}
+            className="cart-header-summary--desktop"
           />
         </IonToolbar>
       </IonHeader>
@@ -93,10 +130,19 @@ export function StorefrontScreen() {
 
           {!isLoading && storefrontContent ? (
             <>
-              <CategoryStripView
+              <ProductFiltersView
                 categories={storefrontContent.categories}
+                brewMethods={brewMethods}
+                roastLevels={roastLevels}
+                intensityRanges={intensityRanges}
                 selectedCategoryId={selectedCategoryId}
+                selectedBrewMethod={selectedBrewMethod}
+                selectedRoastLevel={selectedRoastLevel}
+                selectedIntensityRange={selectedIntensityRange}
                 onSelectCategory={selectCategory}
+                onSelectBrewMethod={selectBrewMethod}
+                onSelectRoastLevel={selectRoastLevel}
+                onSelectIntensityRange={selectIntensityRange}
               />
               {storefrontContent.collections.map((collection) => (
                 <CollectionSectionView
@@ -106,7 +152,11 @@ export function StorefrontScreen() {
                   onAddToCart={handleAddToCart}
                   onAddAnother={increaseProductQuantity}
                   onRemoveFromCart={removeProductFromCart}
+                  onViewProduct={handleViewProduct}
                   selectedCategoryId={selectedCategoryId}
+                  selectedBrewMethod={selectedBrewMethod}
+                  selectedRoastLevel={selectedRoastLevel}
+                  selectedIntensityRange={selectedIntensityRange}
                 />
               ))}
               {!hasMatchingProducts ? (
@@ -115,9 +165,21 @@ export function StorefrontScreen() {
                   <p>Prueba otra categoria o vuelve a ver todo el catalogo.</p>
                 </section>
               ) : null}
+              <CartHeaderSummaryView
+                cartSummary={cartSummary}
+                onCheckout={handleCheckout}
+                className="cart-header-summary--mobile"
+              />
             </>
           ) : null}
         </div>
+        <IonToast
+          isOpen={cartFeedbackMessage.length > 0}
+          message={cartFeedbackMessage}
+          duration={1600}
+          position="bottom"
+          onDidDismiss={() => setCartFeedbackMessage('')}
+        />
       </IonContent>
     </IonPage>
   );
