@@ -1,10 +1,10 @@
-import { environment } from '../../../../core/config/environment';
-import { createAuthHeaders, handleUnauthorizedSession } from '../../../../core/auth/authSession';
+import { createAuthHeaders, handleUnauthorizedSession } from '../../../../network/httpAuth';
+import { httpClient } from '../../../../network/httpClient';
 import type { CheckoutFormModel } from '../../domain/entities/CheckoutFormModel';
 
 export const checkoutApi = {
   async submitOrder(form: CheckoutFormModel): Promise<void> {
-    const response = await fetch(`${environment.apiBaseUrl}/checkout`, {
+    const response = await httpClient.request('/checkout', {
       method: 'POST',
       headers: createAuthHeaders(),
       body: JSON.stringify(form),
