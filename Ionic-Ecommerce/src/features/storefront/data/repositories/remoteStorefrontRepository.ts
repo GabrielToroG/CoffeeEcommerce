@@ -108,7 +108,7 @@ function mapProduct(product: StorefrontApiProductDTO): StorefrontProductModel {
   };
 }
 
-export function createMockStorefrontRepository(
+export function createRemoteStorefrontRepository(
   dataSource: StorefrontDataSourceProtocol,
 ): StorefrontRepository {
   return {

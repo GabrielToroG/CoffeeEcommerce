@@ -2,7 +2,7 @@ import { httpClient } from '../../../../network/httpClient';
 import type { StorefrontApiResponseDTO } from '../entities/StorefrontApiResponseDTO';
 import type { StorefrontDataSourceProtocol } from './storefrontDataSourceProtocol';
 
-export const mockStorefrontDataSource: StorefrontDataSourceProtocol = {
+export const remoteStorefrontDataSource: StorefrontDataSourceProtocol = {
   async getStorefrontContent(): Promise<StorefrontApiResponseDTO> {
     const response = await httpClient.request('/storefront');
 

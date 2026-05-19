@@ -133,14 +133,14 @@ Configuracion actual:
 
 - `authDataSource: local`
 - `checkoutDataSource: local`
-- `storefrontDataSource: mock`
+- `storefrontDataSource: remote`
 - `adminCatalogDataSource: remote`
 
 Eso significa:
 
 - `auth` usa datasource local
 - `checkout` usa datasource local
-- `storefront` usa datos mock
+- `storefront` usa datasource remoto
 - `admin` si usa flujo remoto
 
 ### 4.5 Flujo funcional general
@@ -306,8 +306,8 @@ npm run build:prod
 
 Nota:
 
-- hoy `admin` es la parte mas claramente conectada a backend remoto
-- `auth`, `checkout` y `storefront` siguen una configuracion local/mock en el frontend actual
+- hoy `admin` y `storefront` son las partes mas claramente conectadas a backend remoto
+- `auth` y `checkout` siguen una configuracion local en el frontend actual
 
 ---
 
@@ -331,5 +331,5 @@ No es solo que funcione, sino que sea mantenible cuando crezca.
 - **UseCaseProtocol**: contrato tipado de un caso de uso
 - **Repository**: capa que abstrae acceso a datos
 - **DTO**: objeto de transferencia entre capas o sistemas
-- **DataSource**: origen tecnico de datos local, mock o remoto
+- **DataSource**: origen tecnico de datos local o remoto
 - **Rate limit**: limite de peticiones por tiempo para evitar abuso
