@@ -3,13 +3,11 @@ import {
   IonBadge,
   IonButton,
   IonContent,
-  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonPage,
-  IonToolbar,
 } from '@ionic/react';
 import {
   locationOutline,
@@ -19,37 +17,50 @@ import {
 } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
-import { useAuth } from '../../../auth/presentation/hooks/useAuth';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
+import { useCart } from '../../../cart/presentation/hooks/useCart';
+import { useAccountModule } from '../../composition/AccountModule';
 import './AccountScreens.css';
 
 export function AccountHomeScreen() {
   const history = useHistory();
-  const { session, isSubmitting, logout } = useAuth();
+  const { resolvePresentation } = useAccountModule();
+  const { useAccountSession } = resolvePresentation();
+  const { session, isSubmitting, logout } = useAccountSession();
+  const { cartSummary } = useCart();
 
   if (!session.isAuthenticated || !session.user) {
     return (
       <IonPage>
-        <IonHeader translucent>
-          <IonToolbar>
-            <BrandHomeLinkView />
-            <AuthHeaderPanelView />
-          </IonToolbar>
-        </IonHeader>
+        <DesktopTopHeaderView
+          deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+          cartItemsCount={cartSummary.totalItems}
+          onCartClick={() => history.push('/checkout')}
+          accountActions={<AuthHeaderPanelView />}
+        />
+        <MobileTopHeaderView
+          cartItemsCount={cartSummary.totalItems}
+          onCartClick={() => history.push('/checkout')}
+        />
 
         <IonContent fullscreen>
           <div className="account-shell">
             <section className="account-empty">
               <span className="account-eyebrow">Mi cuenta</span>
-              <h1>Inicia sesion para ver tu cuenta</h1>
-              <p>Desde aqui podras revisar compras, direcciones y datos personales.</p>
-              <IonButton
-                type="button"
-                className="account-button account-button--primary"
-                onClick={() => history.push('/store')}
-              >
-                Volver a la tienda
-              </IonButton>
+              <h1>Inicia sesión para ver tu cuenta</h1>
+              <p>Desde aquí podrás revisar compras, direcciones y datos personales.</p>
+              <div className="account-empty__actions">
+                <AuthHeaderPanelView />
+                <IonButton
+                  type="button"
+                  className="account-button account-button--secondary"
+                  onClick={() => history.push('/store')}
+                >
+                  Volver a la tienda
+                </IonButton>
+              </div>
             </section>
           </div>
         </IonContent>
@@ -82,7 +93,7 @@ export function AccountHomeScreen() {
       ? [
           {
             label: 'Panel admin',
-            description: 'Gestiona catalogo, productos, precios y colecciones.',
+            description: 'Gestiona catálogo, productos, precios y colecciones.',
             path: '/admin/catalog',
             icon: settingsOutline,
           },
@@ -92,12 +103,16 @@ export function AccountHomeScreen() {
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+      />
 
       <IonContent fullscreen>
         <div className="account-shell">
@@ -143,7 +158,7 @@ export function AccountHomeScreen() {
                 onClick={() => void logout()}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Saliendo...' : 'Cerrar sesion'}
+                {isSubmitting ? 'Saliendo...' : 'Cerrar sesión'}
               </IonButton>
             </div>
           </section>

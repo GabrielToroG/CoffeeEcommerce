@@ -47,16 +47,16 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: 1.5rem;
+  gap: var(--surface-panel-padding);
 }
 
 .admin-panel,
 .admin-empty {
   background: rgba(255, 252, 247, 0.92);
   border: 1px solid rgba(112, 86, 56, 0.14);
-  border-radius: 28px;
+  border-radius: var(--surface-panel-radius);
   box-shadow: 0 20px 60px rgba(80, 58, 34, 0.08);
-  padding: 1.5rem;
+  padding: var(--surface-panel-padding);
 }
 
 .admin-panel h2 {
@@ -65,11 +65,45 @@
   font-size: 1.5rem;
 }
 
+.admin-form-sections {
+  display: grid;
+  gap: var(--section-gap);
+  margin-top: 1.25rem;
+}
+
+.admin-form-section {
+  border: 1px solid rgba(112, 86, 56, 0.14);
+  border-radius: var(--surface-card-radius);
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.admin-form-section summary {
+  padding: 0.9rem 1rem;
+  color: #24190f;
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.admin-form-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-form-section summary::after {
+  content: '+';
+  float: right;
+  color: #7a6040;
+}
+
+.admin-form-section[open] summary::after {
+  content: '-';
+}
+
 .admin-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1.25rem;
+  gap: var(--section-gap);
+  padding: 0 1rem 1rem;
 }
 
 .admin-form-grid__full {
@@ -79,13 +113,13 @@
 .admin-collection-selector {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--control-inline-gap);
 }
 
 .admin-collection-selector__grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: var(--control-inline-gap);
 }
 
 .admin-collection-selector__option {
@@ -93,7 +127,7 @@
   --background-activated: #efe7db;
   --background-hover: #efe7db;
   --border-color: rgba(112, 86, 56, 0.18);
-  --border-radius: 999px;
+  --border-radius: var(--control-pill-radius);
   --border-style: solid;
   --border-width: 1px;
   --box-shadow: none;
@@ -119,13 +153,13 @@
 .admin-panel__actions,
 .admin-product-card__actions {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--control-inline-gap);
   flex-wrap: wrap;
   margin-top: 1.25rem;
 }
 
 .admin-button {
-  --border-radius: 999px;
+  --border-radius: var(--control-pill-radius);
   --box-shadow: none;
   --padding-bottom: 0.85rem;
   --padding-end: 1.2rem;
@@ -165,7 +199,7 @@
 .admin-feedback {
   max-width: 1240px;
   margin: 0 auto 1rem;
-  border-radius: 18px;
+  border-radius: var(--radius-l);
   padding: 0.95rem 1rem;
   font-weight: 600;
 }
@@ -183,16 +217,16 @@
 
 .admin-product-list {
   display: grid;
-  gap: 1rem;
+  gap: var(--section-gap);
   margin-top: 1.25rem;
 }
 
 .admin-product-card {
   display: grid;
   grid-template-columns: 7.5rem minmax(0, 1fr);
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 24px;
+  gap: var(--section-gap);
+  padding: var(--space-m);
+  border-radius: var(--surface-card-radius-large);
   background: #fffdfa;
   border: 1px solid rgba(112, 86, 56, 0.12);
 }
@@ -207,7 +241,7 @@
   height: 100%;
   min-height: 8rem;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: var(--radius-l);
 }
 
 .admin-product-card__content {
@@ -217,7 +251,7 @@
 .admin-product-card__header {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--section-gap);
   align-items: flex-start;
 }
 
@@ -242,14 +276,14 @@
 .admin-product-card__collections {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--control-cluster-gap);
 }
 
 .admin-product-card__meta span,
 .admin-product-card__collections span {
   background: #efe7db;
   color: #5a4530;
-  border-radius: 999px;
+  border-radius: var(--control-pill-radius);
   padding: 0.35rem 0.65rem;
   font-size: 0.85rem;
 }
@@ -268,9 +302,15 @@
   }
 }
 
+@media (max-width: 767px) {
+  .admin-shell {
+    padding-bottom: var(--app-mobile-content-bottom-padding);
+  }
+}
+
 @media (max-width: 640px) {
   .admin-shell {
-    padding: 6.5rem 1rem 7rem;
+    padding: 6.5rem 1rem var(--app-mobile-content-bottom-padding);
   }
 
   .admin-form-grid {
@@ -287,6 +327,6 @@
 
   .admin-button,
   .admin-collection-selector__option {
-    min-height: 48px;
+    min-height: var(--tap-target-l);
   }
 }

@@ -45,90 +45,109 @@ export function AdminProductEditorView({
       <span className="admin-panel__eyebrow">
         {editingProduct ? 'Editar producto' : 'Nuevo producto'}
       </span>
-      <h2>{editingProduct ? editingProduct.name : 'Crea un producto para el catalogo'}</h2>
+      <h2>{editingProduct ? editingProduct.name : 'Crea un producto para el catálogo'}</h2>
       <p>
         Administra precios, imagenes, colecciones y contenido desde un solo lugar.
       </p>
 
-      <div className="admin-form-grid">
-        <BaseTextFieldView
-          label="Nombre"
-          value={productForm.name}
-          onChange={(value) => onFieldChange('name', value)}
-          placeholder="Nombre del producto"
-        />
+      <div className="admin-form-sections">
+        <details className="admin-form-section" open>
+          <summary>Datos principales</summary>
+          <div className="admin-form-grid">
+            <BaseTextFieldView
+              label="Nombre"
+              value={productForm.name}
+              onChange={(value) => onFieldChange('name', value)}
+              placeholder="Nombre del producto"
+            />
 
-        <BaseSelectFieldView
-          label="Categoria"
-          value={productForm.categoryId}
-          onChange={(value) => onFieldChange('categoryId', value)}
-          options={categories.map((category) => ({
-            value: category.id,
-            label: category.label,
-          }))}
-        />
+            <BaseSelectFieldView
+              label="Categoria"
+              value={productForm.categoryId}
+              onChange={(value) => onFieldChange('categoryId', value)}
+              options={categories.map((category) => ({
+                value: category.id,
+                label: category.label,
+              }))}
+            />
 
-        <BaseTextFieldView
-          label="Precio"
-          type="number"
-          value={productForm.price}
-          onChange={(value) => onFieldChange('price', value)}
-          placeholder="14990"
-        />
+            <div className="admin-form-grid__full">
+              <BaseTextFieldView
+                label="Descripcion"
+                value={productForm.description}
+                onChange={(value) => onFieldChange('description', value)}
+                placeholder="Describe el producto"
+                multiline
+                rows={5}
+              />
+            </div>
+          </div>
+        </details>
 
-        <BaseTextFieldView
-          label="Precio original"
-          type="number"
-          value={productForm.originalPrice}
-          onChange={(value) => onFieldChange('originalPrice', value)}
-          placeholder="17990"
-        />
+        <details className="admin-form-section" open>
+          <summary>Precio y promocion</summary>
+          <div className="admin-form-grid">
+            <BaseTextFieldView
+              label="Precio"
+              type="number"
+              value={productForm.price}
+              onChange={(value) => onFieldChange('price', value)}
+              placeholder="14990"
+            />
 
-        <BaseTextFieldView
-          label="Badge"
-          value={productForm.badge}
-          onChange={(value) => onFieldChange('badge', value)}
-          placeholder="Top ventas"
-        />
+            <BaseTextFieldView
+              label="Precio original"
+              type="number"
+              value={productForm.originalPrice}
+              onChange={(value) => onFieldChange('originalPrice', value)}
+              placeholder="17990"
+            />
 
-        <BaseTextFieldView
-          label="Rating (0.1 a 5)"
-          type="number"
-          value={productForm.rating}
-          onChange={(value) => onFieldChange('rating', value)}
-          placeholder="4.8"
-        />
+            <BaseTextFieldView
+              label="Badge"
+              value={productForm.badge}
+              onChange={(value) => onFieldChange('badge', value)}
+              placeholder="Top ventas"
+            />
 
-        <div className="admin-form-grid__full">
-          <BaseTextFieldView
-            label="Imagen URL"
-            value={productForm.imageUrl}
-            onChange={(value) => onFieldChange('imageUrl', value)}
-            placeholder="https://..."
-          />
-        </div>
+            <BaseTextFieldView
+              label="Rating (0.1 a 5)"
+              type="number"
+              value={productForm.rating}
+              onChange={(value) => onFieldChange('rating', value)}
+              placeholder="4.8"
+            />
+          </div>
+        </details>
 
-        <div className="admin-form-grid__full">
-          <BaseTextFieldView
-            label="Descripcion"
-            value={productForm.description}
-            onChange={(value) => onFieldChange('description', value)}
-            placeholder="Describe el producto"
-            multiline
-            rows={5}
-          />
-        </div>
+        <details className="admin-form-section" open>
+          <summary>Imagen y colecciones</summary>
+          <div className="admin-form-grid">
+            <div className="admin-form-grid__full">
+              <BaseTextFieldView
+                label="Imagen URL"
+                value={productForm.imageUrl}
+                onChange={(value) => onFieldChange('imageUrl', value)}
+                placeholder="https://..."
+              />
+            </div>
 
-        <div className="admin-form-grid__full">
-          <AdminCollectionSelectorView
-            collections={collections}
-            selectedCollectionIds={productForm.collectionIds}
-            onToggleCollection={onToggleCollection}
-          />
-        </div>
+            <div className="admin-form-grid__full">
+              <AdminCollectionSelectorView
+                collections={collections}
+                selectedCollectionIds={productForm.collectionIds}
+                onToggleCollection={onToggleCollection}
+              />
+            </div>
+          </div>
+        </details>
       </div>
 
-      {errorMessage ? <p className="admin-feedback admin-feedback--error">{errorMessage}</p> : null}
+      {errorMessage ? (
+        <p className="admin-feedback admin-feedback--error" role="alert">
+          {errorMessage}
+        </p>
+      ) : null}
 
       <div className="admin-panel__actions">
         <IonButton type="button" className="admin-button admin-button--secondary" onClick={onReset}>

@@ -1,26 +1,32 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
-import { useAuth } from '../../../auth/presentation/hooks/useAuth';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
+import { useCart } from '../../../cart/presentation/hooks/useCart';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
+import { useAccountModule } from '../../composition/AccountModule';
 import './AccountScreens.css';
 
 export function AccountProfileScreen() {
   const history = useHistory();
-  const { session } = useAuth();
-  const defaultAddress =
-    session.user?.addresses.find((address) => address.isDefault)?.fullAddress ??
-    session.user?.address ??
-    'Sin direccion predeterminada';
+  const { resolvePresentation } = useAccountModule();
+  const { useAccountSession } = resolvePresentation();
+  const { session, defaultAddress } = useAccountSession();
+  const { cartSummary } = useCart();
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+      />
 
       <IonContent fullscreen>
         <div className="account-shell">

@@ -29,7 +29,7 @@ export function AdminProductListView({
     <section className="admin-panel">
       <span className="admin-panel__eyebrow">Catalogo</span>
       <h2>Productos cargados</h2>
-      <p>Selecciona uno para editarlo o elimínalo si ya no debe aparecer en tienda.</p>
+      <p>Selecciona uno para editarlo o eliminalo si ya no debe aparecer en tienda.</p>
 
       <div className="admin-product-list">
         {products.map((product) => (

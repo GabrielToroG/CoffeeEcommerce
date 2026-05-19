@@ -1,11 +1,15 @@
-import { IonButton } from '@ionic/react';
+import { IonButton, IonIcon } from '@ionic/react';
+import { addOutline, removeOutline } from 'ionicons/icons';
 import type { CartSummaryModel } from '../../domain/entities/CartSummaryModel';
+import './CartSummaryView.css';
 
 type CartSummaryProps = {
   cartSummary: CartSummaryModel;
   onAddProduct: (productId: string) => void;
   onRemoveProduct: (productId: string) => void;
   onCheckout: () => void;
+  checkoutLabel?: string;
+  showCheckoutAction?: boolean;
 };
 
 function formatCurrency(value: number) {
@@ -21,6 +25,8 @@ export function CartSummaryView({
   onAddProduct,
   onRemoveProduct,
   onCheckout,
+  checkoutLabel = 'Continuar compra',
+  showCheckoutAction = true,
 }: CartSummaryProps) {
   return (
     <aside className="cart-summary" aria-labelledby="cart-summary-title">
@@ -50,19 +56,25 @@ export function CartSummaryView({
                       <IonButton
                         type="button"
                         className="cart-summary__stepper-button"
-                        onClick={() => onRemoveProduct(item.product.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onRemoveProduct(item.product.id);
+                        }}
                         aria-label={`Quitar una unidad de ${item.product.name}`}
                       >
-                        -
+                        <IonIcon icon={removeOutline} aria-hidden="true" />
                       </IonButton>
-                      <span>{item.quantity}</span>
+                      <span className="cart-summary__stepper-count">{item.quantity}</span>
                       <IonButton
                         type="button"
                         className="cart-summary__stepper-button"
-                        onClick={() => onAddProduct(item.product.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onAddProduct(item.product.id);
+                        }}
                         aria-label={`Agregar otra unidad de ${item.product.name}`}
                       >
-                        +
+                        <IonIcon icon={addOutline} aria-hidden="true" />
                       </IonButton>
                     </div>
                     <strong>{formatCurrency(item.product.price * item.quantity)}</strong>
@@ -77,20 +89,25 @@ export function CartSummaryView({
               <span>Subtotal</span>
               <strong>{formatCurrency(cartSummary.subtotal)}</strong>
             </div>
-            <IonButton
+            {showCheckoutAction ? (
+              <IonButton
               type="button"
               className="storefront-button storefront-button--primary"
-              onClick={onCheckout}
+              onClick={(event) => {
+                event.stopPropagation();
+                onCheckout();
+              }}
               disabled={cartSummary.totalItems === 0}
-            >
-              Continuar compra
-            </IonButton>
+              >
+                {checkoutLabel}
+              </IonButton>
+            ) : null}
           </div>
         </>
       ) : (
         <div className="cart-summary__empty">
-          <p>Tu carrito esta vacio por ahora.</p>
-          <span>Agrega productos del catalogo para ver el resumen aqui.</span>
+          <p>Tu carrito está vacío por ahora.</p>
+          <span>Agrega productos del catálogo para ver el resumen aquí.</span>
         </div>
       )}
     </aside>

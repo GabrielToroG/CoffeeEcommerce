@@ -1,24 +1,24 @@
 # CoffeeEcommerce
 
-Proyecto fullstack de e-commerce de café construido con:
+Proyecto fullstack de e-commerce de cafe construido con:
 
 - Frontend: Ionic React + TypeScript
 - Backend: Node.js + Express + TypeScript
 - Base de datos: PostgreSQL
 
-Este README está pensado para estudiantes: explica cómo funciona el sistema, cómo ejecutarlo y qué arquitectura se está usando sin asumir experiencia avanzada.
+Este README esta pensado para estudiantes: explica como funciona el sistema, como ejecutarlo y que arquitectura se esta usando sin asumir experiencia avanzada.
 
 ---
 
-## 1) ¿Qué hace este proyecto?
+## 1) Que hace este proyecto?
 
-Permite simular una tienda online de café con:
+Permite simular una tienda online de cafe con:
 
-- catálogo de productos
+- catalogo de productos
 - carrito
 - checkout
-- autenticación (registro/login/logout)
-- gestión de direcciones
+- autenticacion (registro, login, logout)
+- gestion de direcciones
 - historial de pedidos
 - panel administrador para CRUD de productos
 
@@ -34,45 +34,45 @@ CoffeeEcommerce/
 
 ---
 
-## 3) Arquitecturas usadas (explicadas simple)
+## 3) Arquitecturas usadas
 
-### 3.1 Clean Architecture (adaptada)
+### 3.1 Clean Architecture
 
-Separación por responsabilidades:
+Separacion por responsabilidades:
 
 - `presentation`: lo que ve y usa el usuario (pantallas, componentes, hooks de UI)
-- `domain`: reglas de negocio (casos de uso)
-- `data`: acceso a APIs, DB y repositorios concretos
+- `domain`: reglas de negocio (use cases, entities y protocolos)
+- `data`: acceso a APIs, datasources, DB y repositorios concretos
+- `composition`: wiring por feature para conectar data, domain y presentation
 
-Idea clave: la UI no debería contener reglas de negocio pesadas, y la lógica de negocio no debería depender de Ionic/React.
+Idea clave: la UI no debe contener reglas de negocio pesadas, y el dominio no debe depender de Ionic o React.
 
 ### 3.2 Feature-Based Architecture
 
-El sistema se separa por dominios funcionales (`auth`, `storefront`, `cart`, `checkout`, etc.), no por carpetas globales tipo `pages/` gigantes.
-
-Esto permite escalar más fácil: cada feature crece de forma ordenada y aislada.
+El sistema se separa por dominios funcionales (`auth`, `storefront`, `cart`, `checkout`, etc.), no por carpetas globales gigantes.
 
 ### 3.3 Component-Based Architecture
 
 En frontend, la UI se compone de piezas reutilizables:
 
-- `atoms` (componentes base)
-- `molecules` (combinaciones pequeñas)
+- `atoms`
+- `molecules`
+- `organisms`
 - componentes y pantallas por feature
 
 ---
 
 ## 4) Frontend (Ionic-Ecommerce)
 
-### 4.1 Organización principal
+### 4.1 Organizacion principal
 
 ```text
 Ionic-Ecommerce/src/
   core/
+    config/
     presentation/components/
     router/
-    auth/
-    config/
+    theme/
   features/
     auth/
     storefront/
@@ -83,24 +83,84 @@ Ionic-Ecommerce/src/
     admin/
 ```
 
-### 4.2 Flujo funcional
+### 4.2 Estructura interna de una feature
+
+```text
+features/<feature>/
+  composition/
+  presentation/
+    components/
+    hooks/
+    screens/
+  domain/
+    entities/
+    repositories/
+    useCases/
+      protocols/
+  data/
+    dataSources/
+    repositories/
+```
+
+### 4.3 Convencion actual de use cases
+
+Los casos de uso frontend siguen una convencion explicita:
+
+- remoto o alineado a endpoint: `get`, `post`, `put`, `patch`, `delete`
+- local o cliente: `getLocal`, `postLocal`, `putLocal`, `patchLocal`, `deleteLocal`
+- logica pura: `compute`, `derive`, `validate`, `resolve`, `map`, `format`
+
+Ejemplos reales del proyecto:
+
+- `getLocalCurrentUserUseCase`
+- `postLocalLoginUseCase`
+- `postLocalCheckoutUseCase`
+- `postAdminProductUseCase`
+- `putAdminProductUseCase`
+- `deriveSelectedDeliveryAddressLabelUseCase`
+- `computeCartSummaryUseCase`
+
+Los contratos de esos casos de uso viven en:
+
+- `domain/useCases/protocols/*UseCaseProtocol.ts`
+- `domain/useCases/protocols/*UseCasesProtocol.ts`
+
+### 4.4 Runtime actual del frontend
+
+Hoy el frontend no trabaja 100% contra backend remoto en todas las features.
+
+Configuracion actual:
+
+- `authDataSource: local`
+- `checkoutDataSource: local`
+- `storefrontDataSource: mock`
+- `adminCatalogDataSource: remote`
+
+Eso significa:
+
+- `auth` usa datasource local
+- `checkout` usa datasource local
+- `storefront` usa datos mock
+- `admin` si usa flujo remoto
+
+### 4.5 Flujo funcional general
 
 1. El usuario ve productos en `storefront`.
 2. Agrega productos al `cart`.
 3. Va a `checkout`.
-4. Front llama al backend para validar compra y registrar pedido.
-5. El perfil muestra direcciones y pedidos.
+4. Gestiona sesion, direcciones y pedidos desde `auth`, `account` y `orders`.
+5. El panel `admin` permite administrar catalogo.
 
-### 4.3 Sesión y seguridad en frontend
+### 4.6 Sesion y seguridad en frontend
 
-- Usa token bearer en headers (`Authorization`).
-- Si backend devuelve `401`, el front detecta sesión expirada, limpia token y fuerza estado no autenticado.
+- Usa token bearer en headers (`Authorization`) cuando la feature trabaja contra backend remoto.
+- Si backend devuelve `401`, el front puede limpiar token y forzar estado no autenticado.
 
 ---
 
 ## 5) Backend (nodejs-Ecommerce)
 
-### 5.1 Organización principal
+### 5.1 Organizacion principal
 
 ```text
 nodejs-Ecommerce/src/
@@ -137,12 +197,12 @@ nodejs-Ecommerce/src/
 
 ### 5.3 Seguridad implementada
 
-- `helmet` (headers HTTP de seguridad)
-- `express.json({ limit: ... })` para limitar tamaño de payload
-- rate limiting por IP (global + auth + checkout + admin)
-- sesiones con expiración (`expires_at`)
-- hash de contraseñas con `bcryptjs`
-- migración progresiva: contraseñas antiguas en texto plano se re-hashean en login exitoso
+- `helmet`
+- `express.json({ limit: ... })`
+- rate limiting por IP
+- sesiones con expiracion (`expires_at`)
+- hash de contrasenas con `bcryptjs`
+- migracion progresiva de passwords antiguas en texto plano
 - rutas admin protegidas por `requireAuth + requireAdmin`
 
 ---
@@ -151,37 +211,30 @@ nodejs-Ecommerce/src/
 
 El backend usa dos ambientes separados:
 
-- desarrollo: `.env.development` -> DB dev
-- producción: `.env.production` -> DB prod
+- desarrollo: `.env.development`
+- produccion: `.env.production`
 
-Script útil:
+Script util:
 
-- `npm run db:bootstrap` (backend)
-  - crea automáticamente las bases declaradas en `.env.development` y `.env.production` si no existen
+- `npm run db:bootstrap`
+  - crea automaticamente las bases declaradas en `.env.development` y `.env.production` si no existen
 
-Al iniciar backend, también se inicializan tablas e índices automáticamente.
+Al iniciar backend, tambien se inicializan tablas e indices automaticamente.
 
 ---
 
-## 7) Configuración mínima para correr el proyecto
+## 7) Configuracion minima para correr el proyecto
 
 ## Requisitos
 
-- Node.js (recomendado v18+)
+- Node.js recomendado v18+
 - npm
 - PostgreSQL instalado y corriendo
 
 ## 7.1 Backend
 
-Entrar a carpeta:
-
 ```bash
 cd nodejs-Ecommerce
-```
-
-Instalar dependencias:
-
-```bash
 npm install
 ```
 
@@ -190,7 +243,7 @@ Revisar variables en:
 - `.env.development`
 - `.env.production`
 
-Crear bases de datos de ambos ambientes:
+Crear bases:
 
 ```bash
 npm run db:bootstrap
@@ -209,24 +262,10 @@ npm run build:dev
 npm run build:prod
 ```
 
-Ejecutar backend compilado:
-
-```bash
-npm run start:dev
-npm run start:prod
-```
-
 ## 7.2 Frontend
-
-Entrar a carpeta:
 
 ```bash
 cd Ionic-Ecommerce
-```
-
-Instalar dependencias:
-
-```bash
 npm install
 ```
 
@@ -250,41 +289,47 @@ npm run build:prod
 
 ---
 
-## 8) Cómo probar rápido el sistema completo
+## 8) Como probar rapido el sistema completo
 
 1. Levantar PostgreSQL.
-2. Levantar backend (`nodejs-Ecommerce`, `npm run dev`).
-3. Levantar frontend (`Ionic-Ecommerce`, `npm run dev`).
+2. Levantar backend en `nodejs-Ecommerce`.
+3. Levantar frontend en `Ionic-Ecommerce`.
 4. Abrir `http://localhost:5173`.
 5. Probar:
-   - registro/login
+   - registro y login
    - agregar direcciones
-   - marcar dirección predeterminada
+   - marcar direccion predeterminada
    - agregar productos al carrito
    - confirmar pedido
    - revisar pedidos
-   - (opcional) probar panel admin con usuario admin
+   - panel admin
+
+Nota:
+
+- hoy `admin` es la parte mas claramente conectada a backend remoto
+- `auth`, `checkout` y `storefront` siguen una configuracion local/mock en el frontend actual
 
 ---
 
-## 9) Mentalidad técnica del proyecto
+## 9) Mentalidad tecnica del proyecto
 
 Este proyecto busca equilibrio entre:
 
 - claridad para aprender
 - arquitectura escalable
-- separación de responsabilidades
-- seguridad práctica para un MVP serio
+- separacion de responsabilidades
+- seguridad practica para un MVP serio
 
-No es solo “que funcione”, sino que sea mantenible cuando crezca.
+No es solo que funcione, sino que sea mantenible cuando crezca.
 
 ---
 
-
 ## 10) Glosario express
 
-- **Feature**: módulo funcional (ej. `checkout`)
-- **Use Case**: acción de negocio (ej. “registrar pedido”)
+- **Feature**: modulo funcional como `checkout`
+- **Use Case**: accion del dominio como `postLocalCheckoutUseCase`
+- **UseCaseProtocol**: contrato tipado de un caso de uso
 - **Repository**: capa que abstrae acceso a datos
-- **DTO**: objeto de transferencia entre capas/sistemas
-- **Rate limit**: límite de peticiones por tiempo para evitar abuso
+- **DTO**: objeto de transferencia entre capas o sistemas
+- **DataSource**: origen tecnico de datos local, mock o remoto
+- **Rate limit**: limite de peticiones por tiempo para evitar abuso

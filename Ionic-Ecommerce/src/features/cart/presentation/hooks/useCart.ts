@@ -1,14 +1,14 @@
-import { createContext, createElement, useContext, useState } from 'react';
+import { createContext, createElement, useContext, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { CartLineModel } from '../../domain/entities/CartLineModel';
 import type { CartProductModel } from '../../domain/entities/CartProductModel';
-import { addCartProductUseCase } from '../../domain/useCases/addCartProductUseCase';
-import { clearCartUseCase } from '../../domain/useCases/clearCartUseCase';
-import { createCartSummaryUseCase } from '../../domain/useCases/createCartSummaryUseCase';
-import { removeCartProductUseCase } from '../../domain/useCases/removeCartProductUseCase';
+import { postLocalCartProductUseCase } from '../../domain/useCases/postLocalCartProductUseCase';
+import { deleteLocalCartUseCase } from '../../domain/useCases/deleteLocalCartUseCase';
+import { computeCartSummaryUseCase } from '../../domain/useCases/computeCartSummaryUseCase';
+import { deleteLocalCartProductUseCase } from '../../domain/useCases/deleteLocalCartProductUseCase';
 
 type CartContextValue = {
-  cartSummary: ReturnType<typeof createCartSummaryUseCase>;
+  cartSummary: ReturnType<typeof computeCartSummaryUseCase>;
   addProductToCart: (product: CartProductModel) => void;
   increaseProductQuantity: (productId: string) => void;
   removeProductFromCart: (productId: string) => void;
@@ -22,46 +22,67 @@ type CartProviderProps = {
   children: ReactNode;
 };
 
-export function CartProvider({ children }: CartProviderProps) {
-  const [cartLines, setCartLines] = useState<CartLineModel[]>([]);
+export function createCartProvider() {
+  return function CartProvider({ children }: CartProviderProps) {
+    const [cartLines, setCartLines] = useState<CartLineModel[]>([]);
+    const lastCartActionRef = useRef<{ key: string; timestamp: number } | null>(null);
 
-  const cartSummary = createCartSummaryUseCase(cartLines);
+    const cartSummary = computeCartSummaryUseCase(cartLines);
 
-  const addProductToCart = (product: CartProductModel) => {
-    setCartLines((currentLines) => addCartProductUseCase(currentLines, product));
+    const runCartActionOnce = (key: string, action: () => void) => {
+      const now = Date.now();
+      const lastAction = lastCartActionRef.current;
+
+      if (lastAction?.key === key && now - lastAction.timestamp < 250) {
+        return;
+      }
+
+      lastCartActionRef.current = { key, timestamp: now };
+      action();
+    };
+
+    const addProductToCart = (product: CartProductModel) => {
+      runCartActionOnce(`quantity:${product.id}`, () => {
+        setCartLines((currentLines) => postLocalCartProductUseCase(currentLines, product));
+      });
+    };
+
+    const removeProductFromCart = (productId: string) => {
+      runCartActionOnce(`remove:${productId}`, () => {
+        setCartLines((currentLines) => deleteLocalCartProductUseCase(currentLines, productId));
+      });
+    };
+
+    const increaseProductQuantity = (productId: string) => {
+      const product = cartLines.find((line) => line.product.id === productId)?.product;
+
+      if (!product) {
+        return;
+      }
+
+      runCartActionOnce(`quantity:${productId}`, () => {
+        setCartLines((currentLines) => postLocalCartProductUseCase(currentLines, product));
+      });
+    };
+
+    const getProductQuantity = (productId: string) =>
+      cartLines.find((line) => line.product.id === productId)?.quantity ?? 0;
+
+    const clearCart = () => {
+      setCartLines(deleteLocalCartUseCase());
+    };
+
+    const value: CartContextValue = {
+      cartSummary,
+      addProductToCart,
+      increaseProductQuantity,
+      removeProductFromCart,
+      getProductQuantity,
+      clearCart,
+    };
+
+    return createElement(CartContext.Provider, { value }, children);
   };
-
-  const removeProductFromCart = (productId: string) => {
-    setCartLines((currentLines) => removeCartProductUseCase(currentLines, productId));
-  };
-
-  const increaseProductQuantity = (productId: string) => {
-    const product = cartLines.find((line) => line.product.id === productId)?.product;
-
-    if (!product) {
-      return;
-    }
-
-    setCartLines((currentLines) => addCartProductUseCase(currentLines, product));
-  };
-
-  const getProductQuantity = (productId: string) =>
-    cartLines.find((line) => line.product.id === productId)?.quantity ?? 0;
-
-  const clearCart = () => {
-    setCartLines(clearCartUseCase());
-  };
-
-  const value: CartContextValue = {
-    cartSummary,
-    addProductToCart,
-    increaseProductQuantity,
-    removeProductFromCart,
-    getProductQuantity,
-    clearCart,
-  };
-
-  return createElement(CartContext.Provider, { value }, children);
 }
 
 export function useCart() {

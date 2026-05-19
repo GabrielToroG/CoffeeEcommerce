@@ -1,13 +1,12 @@
-import type { AuthUserModel } from '../../../auth/domain/entities/AuthUserModel';
-import { createAuthOrdersRepository } from '../../data/repositories/authOrdersRepository';
-import { getOrdersUseCase } from '../../domain/useCases/getOrdersUseCase';
 import type { OrderModel } from '../../domain/entities/OrderModel';
+import type { OrdersUseCasesProtocol } from '../../domain/useCases/protocols/ordersUseCasesProtocol';
 
-export function useOrders(user: AuthUserModel | null) {
-  const repository = createAuthOrdersRepository(user);
-  const orders: OrderModel[] = getOrdersUseCase(repository);
+export function createUseOrders(useCases: OrdersUseCasesProtocol) {
+  return function useOrders() {
+    const orders: OrderModel[] = useCases.getLocalOrdersUseCase();
 
-  return {
-    orders,
+    return {
+      orders,
+    };
   };
 }

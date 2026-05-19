@@ -1,20 +1,20 @@
 import {
   IonContent,
-  IonHeader,
   IonPage,
   IonSpinner,
   IonToast,
-  IonToolbar,
 } from '@ionic/react';
 import { useState } from 'react';
 import type { CartProductModel } from '../../../cart/domain/entities/CartProductModel';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
-import { CartHeaderSummaryView } from '../../../cart/presentation/components/CartHeaderSummaryView';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
+import { useAuth } from '../../../auth/presentation/hooks/useAuth';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
 import { useCart } from '../../../cart/presentation/hooks/useCart';
 import type { StorefrontProductModel } from '../../domain/entities/StorefrontProductModel';
 import { useHistory } from 'react-router-dom';
-import { useStorefront } from '../hooks/useStorefront';
+import { useStorefront } from '../../composition/useStorefront';
 import { CollectionSectionView } from '../components/CollectionSectionView';
 import { ProductFiltersView } from '../components/ProductFiltersView';
 import { matchesIntensityRange } from '../utils/matchesIntensityRange';
@@ -45,6 +45,7 @@ export function StorefrontScreen() {
     removeProductFromCart,
     getProductQuantity,
   } = useCart();
+  const { session } = useAuth();
 
   const handleAddToCart = (product: StorefrontProductModel) => {
     const cartProduct: CartProductModel = {
@@ -96,28 +97,37 @@ export function StorefrontScreen() {
       }),
     ) ?? false;
 
+  const matchingProductsCount = allProducts.filter((product) => {
+    const matchesCategory =
+      selectedCategoryId === null || product.categoryId === selectedCategoryId;
+    const matchesBrewMethod =
+      selectedBrewMethod === null || product.brewMethods.includes(selectedBrewMethod);
+    const matchesRoastLevel =
+      selectedRoastLevel === null || product.roastLevel === selectedRoastLevel;
+    const matchesIntensity = matchesIntensityRange(product.intensity, selectedIntensityRange);
+
+    return matchesCategory && matchesBrewMethod && matchesRoastLevel && matchesIntensity;
+  }).length;
+
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar className="storefront-toolbar">
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-        <IonToolbar className="storefront-toolbar storefront-toolbar--cart">
-          <CartHeaderSummaryView
-            cartSummary={cartSummary}
-            onCheckout={handleCheckout}
-            className="cart-header-summary--desktop"
-          />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={handleCheckout}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={handleCheckout}
+      />
 
       <IonContent fullscreen>
         <div className="storefront-shell">
           {isLoading ? (
             <div className="storefront-feedback" role="status">
               <IonSpinner name="crescent" />
-              <p>Cargando catalogo...</p>
+              <p>Cargando catálogo...</p>
             </div>
           ) : null}
 
@@ -139,6 +149,7 @@ export function StorefrontScreen() {
                 selectedBrewMethod={selectedBrewMethod}
                 selectedRoastLevel={selectedRoastLevel}
                 selectedIntensityRange={selectedIntensityRange}
+                matchingProductsCount={matchingProductsCount}
                 onSelectCategory={selectCategory}
                 onSelectBrewMethod={selectBrewMethod}
                 onSelectRoastLevel={selectRoastLevel}
@@ -162,14 +173,9 @@ export function StorefrontScreen() {
               {!hasMatchingProducts ? (
                 <section className="storefront-feedback storefront-feedback--empty" aria-live="polite">
                   <h2>No encontramos productos para esta categoria</h2>
-                  <p>Prueba otra categoria o vuelve a ver todo el catalogo.</p>
+                  <p>Prueba otra categoría o vuelve a ver todo el catálogo.</p>
                 </section>
               ) : null}
-              <CartHeaderSummaryView
-                cartSummary={cartSummary}
-                onCheckout={handleCheckout}
-                className="cart-header-summary--mobile"
-              />
             </>
           ) : null}
         </div>

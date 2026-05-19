@@ -1,23 +1,24 @@
 import {
-  IonBackButton,
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
+  IonIcon,
   IonPage,
   IonSpinner,
   IonToast,
-  IonToolbar,
 } from '@ionic/react';
+import { addOutline, removeOutline } from 'ionicons/icons';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
+import { useAuth } from '../../../auth/presentation/hooks/useAuth';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
 import type { CartProductModel } from '../../../cart/domain/entities/CartProductModel';
 import { useCart } from '../../../cart/presentation/hooks/useCart';
 import { BaseChipView } from '../../../../core/presentation/components/atoms/baseChip/BaseChipView';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
 import { formatCurrency } from '../utils/formatCurrency';
-import { useStorefront } from '../hooks/useStorefront';
+import { useStorefront } from '../../composition/useStorefront';
 import './StorefrontProductDetailScreen.css';
 
 type ProductDetailRouteParams = {
@@ -25,10 +26,13 @@ type ProductDetailRouteParams = {
 };
 
 export function StorefrontProductDetailScreen() {
+  const history = useHistory();
   const [cartFeedbackMessage, setCartFeedbackMessage] = useState('');
+  const { session } = useAuth();
   const { productId } = useParams<ProductDetailRouteParams>();
   const { storefrontContent, isLoading, errorMessage } = useStorefront();
   const {
+    cartSummary,
     addProductToCart,
     increaseProductQuantity,
     removeProductFromCart,
@@ -59,15 +63,16 @@ export function StorefrontProductDetailScreen() {
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/store" text="" />
-          </IonButtons>
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+      />
 
       <IonContent fullscreen>
         <main className="product-detail-shell">
@@ -88,7 +93,7 @@ export function StorefrontProductDetailScreen() {
           {!isLoading && !errorMessage && !product ? (
             <section className="product-detail-feedback product-detail-feedback--error" role="alert">
               <h1>Producto no encontrado</h1>
-              <p>Vuelve a la tienda para revisar el catalogo disponible.</p>
+              <p>Vuelve a la tienda para revisar el catálogo disponible.</p>
             </section>
           ) : null}
 
@@ -141,26 +146,35 @@ export function StorefrontProductDetailScreen() {
                       <IonButton
                         type="button"
                         className="product-detail__stepper-button"
-                        onClick={() => removeProductFromCart(product.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          removeProductFromCart(product.id);
+                        }}
                         aria-label={`Quitar una unidad de ${product.name}`}
                       >
-                        -
+                        <IonIcon icon={removeOutline} aria-hidden="true" />
                       </IonButton>
-                      <span>{quantityInCart}</span>
+                      <span className="product-detail__stepper-count">{quantityInCart}</span>
                       <IonButton
                         type="button"
                         className="product-detail__stepper-button"
-                        onClick={() => increaseProductQuantity(product.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          increaseProductQuantity(product.id);
+                        }}
                         aria-label={`Agregar otra unidad de ${product.name}`}
                       >
-                        +
+                        <IonIcon icon={addOutline} aria-hidden="true" />
                       </IonButton>
                     </div>
                   ) : (
                     <IonButton
                       type="button"
                       className="product-detail__add-button"
-                      onClick={addToCart}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        addToCart();
+                      }}
                     >
                       Agregar al carrito
                     </IonButton>

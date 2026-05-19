@@ -1,42 +1,42 @@
 import {
   IonButton,
   IonContent,
-  IonHeader,
   IonPage,
-  IonToolbar,
 } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
 import { useAuth } from '../../../auth/presentation/hooks/useAuth';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
 import { BaseSelectFieldView } from '../../../../core/presentation/components/molecules/baseSelectField/BaseSelectFieldView';
 import { BaseTextFieldView } from '../../../../core/presentation/components/molecules/baseTextField/BaseTextFieldView';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
 import { useHistory } from 'react-router-dom';
+import { CartSummaryView } from '../../../cart/presentation/components/CartSummaryView';
 import { useCart } from '../../../cart/presentation/hooks/useCart';
-import { useCheckout } from '../hooks/useCheckout';
+import { useCheckout } from '../../composition/useCheckout';
 import './CheckoutScreen.css';
 
 type CheckoutStep = 'customer' | 'delivery' | 'payment' | 'review';
 
 const checkoutSteps: Array<{ id: CheckoutStep; label: string }> = [
   { id: 'customer', label: 'Datos' },
-  { id: 'delivery', label: 'Direccion' },
+  { id: 'delivery', label: 'Dirección' },
   { id: 'payment', label: 'Pago' },
-  { id: 'review', label: 'Revision' },
+  { id: 'review', label: 'Revisión' },
 ];
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat('es-CL', {
-    style: 'currency',
-    currency: 'CLP',
-    maximumFractionDigits: 0,
-  }).format(value);
-}
 
 export function CheckoutScreen() {
   const history = useHistory();
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('customer');
-  const { cartSummary, clearCart } = useCart();
+  const activePanelRef = useRef<HTMLElement | null>(null);
+  const shouldFocusStepRef = useRef(false);
+  const {
+    cartSummary,
+    clearCart,
+    increaseProductQuantity,
+    removeProductFromCart,
+  } = useCart();
   const { session, registerOrder } = useAuth();
   const {
     form,
@@ -62,6 +62,12 @@ export function CheckoutScreen() {
     form.customerName.trim().length > 0 && form.email.trim().length > 0;
   const isDeliveryStepComplete = form.address.trim().length > 0;
   const isPaymentStepComplete = form.paymentMethod.trim().length > 0;
+  const completedStepsById: Record<CheckoutStep, boolean> = {
+    customer: isCustomerStepComplete,
+    delivery: isDeliveryStepComplete,
+    payment: isPaymentStepComplete,
+    review: isFormComplete,
+  };
   const canContinueFromCurrentStep =
     currentStep === 'customer'
       ? isCustomerStepComplete
@@ -71,6 +77,30 @@ export function CheckoutScreen() {
           ? isPaymentStepComplete
           : isFormComplete;
 
+  const canOpenStep = (stepIndex: number) =>
+    checkoutSteps
+      .slice(0, stepIndex)
+      .every((step) => completedStepsById[step.id]);
+
+  useEffect(() => {
+    if (!shouldFocusStepRef.current) {
+      return;
+    }
+
+    shouldFocusStepRef.current = false;
+    const activePanel = activePanelRef.current;
+
+    if (!activePanel) {
+      return;
+    }
+
+    const focusableField = activePanel.querySelector<HTMLElement>(
+      'input, textarea, select, ion-input, ion-textarea, ion-select, button',
+    );
+
+    focusableField?.focus();
+  }, [currentStep]);
+
   const goToNextStep = () => {
     const nextStep = checkoutSteps[currentStepIndex + 1];
 
@@ -78,6 +108,7 @@ export function CheckoutScreen() {
       return;
     }
 
+    shouldFocusStepRef.current = true;
     setCurrentStep(nextStep.id);
   };
 
@@ -88,6 +119,7 @@ export function CheckoutScreen() {
       return;
     }
 
+    shouldFocusStepRef.current = true;
     setCurrentStep(previousStep.id);
   };
 
@@ -113,19 +145,23 @@ export function CheckoutScreen() {
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+      />
 
       <IonContent fullscreen>
         <div className="checkout-shell">
           {cartSummary.items.length === 0 && !isSuccess ? (
             <section className="checkout-empty">
               <span className="checkout-eyebrow">Checkout</span>
-              <h1>Tu carrito esta vacio</h1>
+              <h1>Tu carrito está vacío</h1>
               <p>Agrega productos en la tienda antes de continuar con la compra.</p>
               <IonButton
                 type="button"
@@ -143,7 +179,7 @@ export function CheckoutScreen() {
                 <span className="checkout-eyebrow">Despacho y pago</span>
                 <h1>Completa tu pedido</h1>
                 <p>
-                  Finaliza tu compra con un checkout simple y deja listo tu proximo cafe.
+                  Finaliza tu compra con un checkout simple y deja listo tu próximo café.
                 </p>
 
                 <div className="checkout-steps" aria-label="Pasos del checkout">
@@ -155,10 +191,13 @@ export function CheckoutScreen() {
                         step.id === currentStep ? 'checkout-step--active' : ''
                       } ${index < currentStepIndex ? 'checkout-step--complete' : ''}`}
                       onClick={() => {
-                        if (index <= currentStepIndex) {
+                        if (canOpenStep(index)) {
+                          shouldFocusStepRef.current = true;
                           setCurrentStep(step.id);
                         }
                       }}
+                      disabled={!canOpenStep(index)}
+                      aria-current={step.id === currentStep ? 'step' : undefined}
                     >
                       <span>{index + 1}</span>
                       {step.label}
@@ -168,10 +207,13 @@ export function CheckoutScreen() {
 
                 <div className="checkout-form">
                   <section
+                    ref={currentStep === 'customer' ? activePanelRef : null}
                     className={`checkout-step-panel ${
                       currentStep === 'customer' ? 'checkout-step-panel--active' : ''
                     }`}
                     aria-label="Datos del comprador"
+                    aria-describedby={errorMessage ? 'checkout-error' : undefined}
+                    aria-hidden={currentStep !== 'customer'}
                   >
                     <BaseTextFieldView
                       label="Nombre completo"
@@ -190,16 +232,19 @@ export function CheckoutScreen() {
                   </section>
 
                   <section
+                    ref={currentStep === 'delivery' ? activePanelRef : null}
                     className={`checkout-step-panel ${
                       currentStep === 'delivery' ? 'checkout-step-panel--active' : ''
                     }`}
-                    aria-label="Direccion de despacho"
+                    aria-label="Dirección de despacho"
+                    aria-describedby={errorMessage ? 'checkout-error' : undefined}
+                    aria-hidden={currentStep !== 'delivery'}
                   >
                     <div className="checkout-field">
                       {savedAddresses.length > 0 ? (
                         <div className="checkout-address-picker">
                           <BaseSelectFieldView
-                            label="Direccion de despacho"
+                            label="Dirección de despacho"
                             value={selectedAddressId}
                             onChange={selectAddress}
                             options={[
@@ -209,40 +254,43 @@ export function CheckoutScreen() {
                               })),
                               {
                                 value: customAddressOption,
-                                label: 'Usar una direccion rapida',
+                                label: 'Usar una dirección rápida',
                               },
                             ]}
                           />
 
                           {isUsingCustomAddress ? (
                             <BaseTextFieldView
-                              label="Direccion rapida"
+                              label="Dirección rápida"
                               multiline
                               rows={4}
                               value={form.address}
                               onChange={(value) => updateField('address', value)}
-                              placeholder="Calle, numero, comuna y referencias"
+                              placeholder="Calle, número, comuna y referencias"
                             />
                           ) : null}
                         </div>
                       ) : (
                         <BaseTextFieldView
-                          label="Direccion de despacho"
+                          label="Dirección de despacho"
                           multiline
                           rows={4}
                           value={form.address}
                           onChange={(value) => updateField('address', value)}
-                          placeholder="Calle, numero, comuna y referencias"
+                          placeholder="Calle, número, comuna y referencias"
                         />
                       )}
                     </div>
                   </section>
 
                   <section
+                    ref={currentStep === 'payment' ? activePanelRef : null}
                     className={`checkout-step-panel ${
                       currentStep === 'payment' ? 'checkout-step-panel--active' : ''
                     }`}
                     aria-label="Metodo de pago"
+                    aria-describedby={errorMessage ? 'checkout-error' : undefined}
+                    aria-hidden={currentStep !== 'payment'}
                   >
                     <BaseSelectFieldView
                       label="Metodo de pago"
@@ -257,10 +305,14 @@ export function CheckoutScreen() {
                   </section>
 
                   <section
+                    ref={currentStep === 'review' ? activePanelRef : null}
                     className={`checkout-step-panel ${
                       currentStep === 'review' ? 'checkout-step-panel--active' : ''
                     }`}
-                    aria-label="Revision del pedido"
+                    aria-label="Revisión del pedido"
+                    aria-describedby={errorMessage ? 'checkout-error' : undefined}
+                    tabIndex={-1}
+                    aria-hidden={currentStep !== 'review'}
                   >
                     <div className="checkout-review">
                       <div>
@@ -270,7 +322,7 @@ export function CheckoutScreen() {
                       </div>
                       <div>
                         <span>Despacho</span>
-                        <strong>{form.address || 'Direccion pendiente'}</strong>
+                        <strong>{form.address || 'Dirección pendiente'}</strong>
                       </div>
                       <div>
                         <span>Pago</span>
@@ -280,7 +332,11 @@ export function CheckoutScreen() {
                   </section>
                 </div>
 
-                {errorMessage ? <p className="checkout-error">{errorMessage}</p> : null}
+                {errorMessage ? (
+                  <p id="checkout-error" className="checkout-error" role="alert">
+                    {errorMessage}
+                  </p>
+                ) : null}
 
                 <div className="checkout-actions">
                   <IonButton
@@ -288,7 +344,7 @@ export function CheckoutScreen() {
                     className="checkout-button checkout-button--secondary"
                     onClick={currentStepIndex === 0 ? goToStore : goToPreviousStep}
                   >
-                    {currentStepIndex === 0 ? 'Seguir comprando' : 'Atras'}
+                    {currentStepIndex === 0 ? 'Seguir comprando' : 'Atrás'}
                   </IonButton>
                   {currentStep === 'review' ? (
                     <IonButton
@@ -316,36 +372,24 @@ export function CheckoutScreen() {
                 </div>
               </section>
 
-              <aside className="checkout-summary">
-                <span className="checkout-eyebrow">Resumen</span>
-                <h2>Tu compra</h2>
-                <div className="checkout-summary__items">
-                  {cartSummary.items.map((item) => (
-                    <article key={item.product.id} className="checkout-summary__item">
-                      <img src={item.product.imageUrl} alt={item.product.name} />
-                      <div>
-                        <strong>{item.product.name}</strong>
-                        <span>
-                          {item.quantity} x {formatCurrency(item.product.price)}
-                        </span>
-                      </div>
-                      <strong>{formatCurrency(item.product.price * item.quantity)}</strong>
-                    </article>
-                  ))}
-                </div>
-                <div className="checkout-summary__totals">
-                  <span>{cartSummary.totalItems} productos</span>
-                  <strong>{formatCurrency(cartSummary.subtotal)}</strong>
-                </div>
-              </aside>
+              <CartSummaryView
+                cartSummary={cartSummary}
+                onAddProduct={increaseProductQuantity}
+                onRemoveProduct={removeProductFromCart}
+                onCheckout={() => {
+                  shouldFocusStepRef.current = true;
+                  setCurrentStep('review');
+                }}
+                showCheckoutAction={false}
+              />
             </div>
           ) : null}
 
           {isSuccess ? (
             <section className="checkout-success">
               <span className="checkout-eyebrow">Pedido confirmado</span>
-              <h1>Compra realizada con exito</h1>
-              <p>Te enviaremos la confirmacion y el detalle de despacho a tu correo.</p>
+              <h1>Compra realizada con éxito</h1>
+              <p>Te enviaremos la confirmación y el detalle de despacho a tu correo.</p>
               <IonButton
                 type="button"
                 className="checkout-button checkout-button--primary"

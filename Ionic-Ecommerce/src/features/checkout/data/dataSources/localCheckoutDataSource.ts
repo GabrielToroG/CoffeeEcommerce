@@ -1,0 +1,24 @@
+import { createAuthHeaders, handleUnauthorizedSession } from '../../../../network/httpAuth';
+import { httpClient } from '../../../../network/httpClient';
+import type { CheckoutFormModel } from '../../domain/entities/CheckoutFormModel';
+import type { CheckoutDataSourceProtocol } from './checkoutDataSourceProtocol';
+
+export const localCheckoutDataSource: CheckoutDataSourceProtocol = {
+  async submitOrder(form: CheckoutFormModel): Promise<void> {
+    const response = await httpClient.request('/checkout', {
+      method: 'POST',
+      headers: createAuthHeaders(),
+      body: JSON.stringify(form),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        handleUnauthorizedSession();
+        throw new Error('Tu sesion expiro. Inicia sesion nuevamente.');
+      }
+
+      const error = (await response.json().catch(() => null)) as { message?: string } | null;
+      throw new Error(error?.message ?? 'No fue posible completar tu compra.');
+    }
+  },
+};

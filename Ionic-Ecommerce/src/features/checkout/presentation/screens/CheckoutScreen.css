@@ -9,17 +9,17 @@
 
 .checkout-layout {
   display: grid;
-  gap: 20px;
+  gap: var(--section-gap);
 }
 
 .checkout-panel,
 .checkout-summary,
 .checkout-empty,
 .checkout-success {
-  padding: 24px;
-  border-radius: 28px;
+  padding: var(--surface-panel-padding);
+  border-radius: var(--surface-panel-radius);
   background: rgba(255, 252, 248, 0.92);
-  box-shadow: 0 18px 44px rgba(61, 38, 28, 0.12);
+  box-shadow: var(--surface-panel-shadow);
 }
 
 .checkout-eyebrow {
@@ -47,25 +47,25 @@
 
 .checkout-form {
   display: grid;
-  gap: 14px;
+  gap: var(--section-gap);
   margin-top: 24px;
 }
 
 .checkout-steps {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--control-cluster-gap);
   margin-top: 22px;
 }
 
 .checkout-step {
   display: grid;
   justify-items: center;
-  gap: 6px;
+  gap: var(--control-icon-label-gap);
   min-height: 62px;
   padding: 8px 6px;
   border: 1px solid rgba(95, 61, 46, 0.12);
-  border-radius: 8px;
+  border-radius: var(--control-radius);
   background: #fff;
   color: #6f5648;
   font: inherit;
@@ -79,7 +79,7 @@
   width: 24px;
   height: 24px;
   place-items: center;
-  border-radius: 999px;
+  border-radius: var(--control-pill-radius);
   background: #f3e6d8;
   color: #5f3d2e;
   font-size: 0.76rem;
@@ -99,7 +99,7 @@
 
 .checkout-step-panel {
   display: none;
-  gap: 14px;
+  gap: var(--section-gap);
 }
 
 .checkout-step-panel--active {
@@ -108,14 +108,14 @@
 
 .checkout-review {
   display: grid;
-  gap: 10px;
+  gap: var(--control-inline-gap);
 }
 
 .checkout-review div {
   display: grid;
-  gap: 4px;
-  padding: 12px;
-  border-radius: 8px;
+  gap: var(--control-icon-label-gap);
+  padding: var(--surface-card-padding);
+  border-radius: var(--surface-card-radius);
   background: #fff;
 }
 
@@ -137,24 +137,24 @@
 
 .checkout-field {
   display: grid;
-  gap: 8px;
+  gap: var(--form-field-gap);
   font-weight: 600;
 }
 
 .checkout-address-picker {
   display: grid;
-  gap: 10px;
+  gap: var(--control-inline-gap);
 }
 
 .checkout-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--control-inline-gap);
   margin-top: 20px;
 }
 
 .checkout-button {
-  --border-radius: 999px;
+  --border-radius: var(--control-pill-radius);
   --box-shadow: none;
   --padding-bottom: 12px;
   --padding-end: 18px;
@@ -205,15 +205,15 @@
 
 .checkout-summary__items {
   display: grid;
-  gap: 12px;
+  gap: var(--control-inline-gap);
 }
 
 .checkout-summary__item {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: var(--control-inline-gap);
   align-items: center;
-  padding: 12px;
+  padding: var(--surface-card-padding);
   border-radius: 20px;
   background: #fff;
 }
@@ -227,7 +227,7 @@
 
 .checkout-summary__item div {
   display: grid;
-  gap: 4px;
+  gap: var(--control-icon-label-gap);
 }
 
 .checkout-summary__item span {
@@ -239,7 +239,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: var(--control-inline-gap);
   margin-top: 18px;
   padding-top: 18px;
   border-top: 1px solid rgba(95, 61, 46, 0.14);
@@ -247,7 +247,7 @@
 
 .checkout-success {
   display: grid;
-  gap: 12px;
+  gap: var(--control-inline-gap);
   align-content: start;
   padding: 28px 24px;
 }
@@ -283,15 +283,15 @@
 
 @media (max-width: 767px) {
   .checkout-shell {
-    padding: 18px 12px 112px;
+    padding: 18px 12px var(--app-mobile-content-bottom-padding);
   }
 
   .checkout-panel,
   .checkout-summary,
   .checkout-empty,
   .checkout-success {
-    padding: 18px;
-    border-radius: 8px;
+    padding: var(--surface-panel-padding-mobile);
+    border-radius: var(--surface-panel-radius-mobile);
   }
 
   .checkout-panel h1,
@@ -306,7 +306,7 @@
 
   .checkout-button {
     width: 100%;
-    min-height: 48px;
+    min-height: var(--tap-target-l);
   }
 
   .checkout-summary__item {
@@ -320,6 +320,6 @@
   .checkout-summary__item img {
     width: 54px;
     height: 54px;
-    border-radius: 8px;
+    border-radius: var(--surface-card-radius);
   }
 }

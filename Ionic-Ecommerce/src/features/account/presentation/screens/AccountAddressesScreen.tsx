@@ -1,14 +1,20 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { BaseCheckboxFieldView } from '../../../../core/presentation/components/molecules/baseCheckboxField/BaseCheckboxFieldView';
 import { BaseTextFieldView } from '../../../../core/presentation/components/molecules/baseTextField/BaseTextFieldView';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
-import { useAccountAddresses } from '../hooks/useAccountAddresses';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
+import { useCart } from '../../../cart/presentation/hooks/useCart';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
+import { useAccountModule } from '../../composition/AccountModule';
 import './AccountScreens.css';
 
 export function AccountAddressesScreen() {
   const history = useHistory();
+  const { cartSummary } = useCart();
+  const { resolvePresentation } = useAccountModule();
+  const { useAccountAddresses } = resolvePresentation();
   const {
     session,
     label,
@@ -31,20 +37,24 @@ export function AccountAddressesScreen() {
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+      />
 
       <IonContent fullscreen>
         <div className="account-shell">
           {!session.isAuthenticated || !session.user ? (
             <section className="account-empty">
               <span className="account-eyebrow">Cuenta</span>
-              <h1>Inicia sesion para ver tus direcciones</h1>
-              <p>Tus direcciones guardadas apareceran aqui cuando tengas una cuenta activa.</p>
+              <h1>Inicia sesión para ver tus direcciones</h1>
+              <p>Tus direcciones guardadas aparecerán aquí cuando tengas una cuenta activa.</p>
               <IonButton
                 type="button"
                 className="account-button account-button--primary"
@@ -63,7 +73,7 @@ export function AccountAddressesScreen() {
                 <div className="account-field-group">
                   <BaseTextFieldView
                     className="account-field"
-                    label="Nombre de la direccion"
+                    label="Nombre de la dirección"
                     value={label}
                     onChange={setLabel}
                     placeholder="Ej: Casa, Oficina, Regalo"
@@ -71,26 +81,32 @@ export function AccountAddressesScreen() {
 
                   <BaseTextFieldView
                     className="account-field"
-                    label="Direccion completa"
+                    label="Dirección completa"
                     multiline
                     rows={3}
                     value={fullAddress}
                     onChange={setFullAddress}
-                    placeholder="Calle, numero, comuna, ciudad y referencias"
+                    placeholder="Calle, número, comuna, ciudad y referencias"
                   />
                 </div>
 
                 <BaseCheckboxFieldView
-                  label="Usar como direccion predeterminada"
+                  label="Usar como dirección predeterminada"
                   helperText="Se utilizara por defecto en checkout, salvo que elijas otra."
                   checked={setAsDefault}
                   onChange={setSetAsDefault}
                   disabled={isSubmitting}
                 />
 
-                {errorMessage ? <p className="account-feedback account-feedback--error">{errorMessage}</p> : null}
+                {errorMessage ? (
+                  <p className="account-feedback account-feedback--error" role="alert">
+                    {errorMessage}
+                  </p>
+                ) : null}
                 {successMessage ? (
-                  <p className="account-feedback account-feedback--success">{successMessage}</p>
+                  <p className="account-feedback account-feedback--success" role="status">
+                    {successMessage}
+                  </p>
                 ) : null}
 
                 <IonButton
@@ -98,7 +114,7 @@ export function AccountAddressesScreen() {
                   className="account-button account-button--primary"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Guardando...' : 'Agregar direccion'}
+                  {isSubmitting ? 'Guardando...' : 'Agregar dirección'}
                 </IonButton>
               </form>
 

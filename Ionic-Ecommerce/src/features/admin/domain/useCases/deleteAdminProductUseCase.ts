@@ -1,8 +1,10 @@
 import type { AdminCatalogRepository } from '../repositories/adminCatalogRepository';
+import type { DeleteAdminProductUseCaseProtocol } from './protocols/deleteAdminProductUseCaseProtocol';
 
-export async function deleteAdminProductUseCase(
+export function createDeleteAdminProductUseCase(
   repository: AdminCatalogRepository,
-  productId: string,
-) {
-  await repository.deleteProduct(productId);
+): DeleteAdminProductUseCaseProtocol {
+  return async function deleteAdminProductUseCase(productId: string) {
+    await repository.deleteProduct(productId);
+  };
 }

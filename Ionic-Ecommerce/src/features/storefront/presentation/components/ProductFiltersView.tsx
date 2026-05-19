@@ -12,11 +12,31 @@ type ProductFiltersProps = {
   selectedBrewMethod: string | null;
   selectedRoastLevel: string | null;
   selectedIntensityRange: string | null;
+  matchingProductsCount: number;
   onSelectCategory: (categoryId: string | null) => void;
   onSelectBrewMethod: (brewMethod: string | null) => void;
   onSelectRoastLevel: (roastLevel: string | null) => void;
   onSelectIntensityRange: (intensityRange: string | null) => void;
 };
+
+type FilterChipProps = {
+  isActive: boolean;
+  label: string;
+  onClick: () => void;
+};
+
+function FilterChip({ isActive, label, onClick }: FilterChipProps) {
+  return (
+    <IonButton
+      type="button"
+      className={`storefront-filter-chip ${isActive ? 'storefront-filter-chip--active' : ''}`}
+      onClick={onClick}
+      aria-pressed={isActive}
+    >
+      {label}
+    </IonButton>
+  );
+}
 
 export function ProductFiltersView({
   categories,
@@ -27,6 +47,7 @@ export function ProductFiltersView({
   selectedBrewMethod,
   selectedRoastLevel,
   selectedIntensityRange,
+  matchingProductsCount,
   onSelectCategory,
   onSelectBrewMethod,
   onSelectRoastLevel,
@@ -46,100 +67,99 @@ export function ProductFiltersView({
     onSelectRoastLevel(null);
     onSelectIntensityRange(null);
   };
+  const selectedCategoryLabel =
+    categories.find((category) => category.id === selectedCategoryId)?.label ?? null;
+  const activeFilterChips = [
+    selectedCategoryLabel
+      ? { label: selectedCategoryLabel, onClear: () => onSelectCategory(null) }
+      : null,
+    selectedBrewMethod
+      ? { label: selectedBrewMethod, onClear: () => onSelectBrewMethod(null) }
+      : null,
+    selectedRoastLevel
+      ? { label: selectedRoastLevel, onClear: () => onSelectRoastLevel(null) }
+      : null,
+    selectedIntensityRange
+      ? { label: `Intensidad ${selectedIntensityRange}`, onClear: () => onSelectIntensityRange(null) }
+      : null,
+  ].filter((chip): chip is { label: string; onClear: () => void } => Boolean(chip));
 
-  const filterGroups = (
+  const renderFilterGroups = () => (
     <div
-      id="storefront-filter-groups"
       className="storefront-filter-groups"
     >
-      <div className="storefront-filter-group" aria-label="Filtrar por categoria">
+      <div className="storefront-filter-group" role="group" aria-label="Filtrar por categoria">
         <span>Categoria</span>
         <div className="storefront-filter-chips">
-          <IonButton
-            type="button"
-            className={`storefront-filter-chip ${selectedCategoryId === null ? 'storefront-filter-chip--active' : ''}`}
+          <FilterChip
+            isActive={selectedCategoryId === null}
+            label="Todas"
             onClick={() => onSelectCategory(null)}
-          >
-            Todas
-          </IonButton>
+          />
           {categories.map((category) => (
-            <IonButton
+            <FilterChip
               key={category.id}
-              type="button"
-              className={`storefront-filter-chip ${selectedCategoryId === category.id ? 'storefront-filter-chip--active' : ''}`}
+              isActive={selectedCategoryId === category.id}
+              label={category.label}
               onClick={() => onSelectCategory(category.id)}
-            >
-              {category.label}
-            </IonButton>
+            />
           ))}
         </div>
       </div>
 
-      <div className="storefront-filter-group" aria-label="Filtrar por preparacion">
+      <div className="storefront-filter-group" role="group" aria-label="Filtrar por preparacion">
         <span>Preparacion</span>
         <div className="storefront-filter-chips">
-          <IonButton
-            type="button"
-            className={`storefront-filter-chip ${selectedBrewMethod === null ? 'storefront-filter-chip--active' : ''}`}
+          <FilterChip
+            isActive={selectedBrewMethod === null}
+            label="Todas"
             onClick={() => onSelectBrewMethod(null)}
-          >
-            Todas
-          </IonButton>
+          />
           {brewMethods.map((brewMethod) => (
-            <IonButton
+            <FilterChip
               key={brewMethod}
-              type="button"
-              className={`storefront-filter-chip ${selectedBrewMethod === brewMethod ? 'storefront-filter-chip--active' : ''}`}
+              isActive={selectedBrewMethod === brewMethod}
+              label={brewMethod}
               onClick={() => onSelectBrewMethod(brewMethod)}
-            >
-              {brewMethod}
-            </IonButton>
+            />
           ))}
         </div>
       </div>
 
-      <div className="storefront-filter-group" aria-label="Filtrar por tueste">
+      <div className="storefront-filter-group" role="group" aria-label="Filtrar por tueste">
         <span>Tueste</span>
         <div className="storefront-filter-chips">
-          <IonButton
-            type="button"
-            className={`storefront-filter-chip ${selectedRoastLevel === null ? 'storefront-filter-chip--active' : ''}`}
+          <FilterChip
+            isActive={selectedRoastLevel === null}
+            label="Todos"
             onClick={() => onSelectRoastLevel(null)}
-          >
-            Todos
-          </IonButton>
+          />
           {roastLevels.map((roastLevel) => (
-            <IonButton
+            <FilterChip
               key={roastLevel}
-              type="button"
-              className={`storefront-filter-chip ${selectedRoastLevel === roastLevel ? 'storefront-filter-chip--active' : ''}`}
+              isActive={selectedRoastLevel === roastLevel}
+              label={roastLevel}
               onClick={() => onSelectRoastLevel(roastLevel)}
-            >
-              {roastLevel}
-            </IonButton>
+            />
           ))}
         </div>
       </div>
 
-      <div className="storefront-filter-group" aria-label="Filtrar por intensidad">
+      <div className="storefront-filter-group" role="group" aria-label="Filtrar por intensidad">
         <span>Intensidad</span>
         <div className="storefront-filter-chips">
-          <IonButton
-            type="button"
-            className={`storefront-filter-chip ${selectedIntensityRange === null ? 'storefront-filter-chip--active' : ''}`}
+          <FilterChip
+            isActive={selectedIntensityRange === null}
+            label="Todas"
             onClick={() => onSelectIntensityRange(null)}
-          >
-            Todas
-          </IonButton>
+          />
           {intensityRanges.map((intensityRange) => (
-            <IonButton
+            <FilterChip
               key={intensityRange}
-              type="button"
-              className={`storefront-filter-chip ${selectedIntensityRange === intensityRange ? 'storefront-filter-chip--active' : ''}`}
+              isActive={selectedIntensityRange === intensityRange}
+              label={intensityRange}
               onClick={() => onSelectIntensityRange(intensityRange)}
-            >
-              {intensityRange}
-            </IonButton>
+            />
           ))}
         </div>
       </div>
@@ -152,7 +172,7 @@ export function ProductFiltersView({
         <summary className="storefront-filters__header">
           <div>
             <span className="storefront-section__eyebrow">Filtros</span>
-            <h2 id="storefront-filters-title">Encuentra tu cafe ideal</h2>
+            <h2 id="storefront-filters-title">Encuentra tu café ideal</h2>
           </div>
           <div className="storefront-filters__status">
             {activeFiltersCount > 0 ? (
@@ -165,7 +185,7 @@ export function ProductFiltersView({
             />
           </div>
         </summary>
-        {filterGroups}
+        {renderFilterGroups()}
       </details>
 
       <div className="storefront-filters-trigger">
@@ -177,7 +197,27 @@ export function ProductFiltersView({
           Filtros
           {activeFiltersCount > 0 ? <span>{activeFiltersCount}</span> : null}
         </IonButton>
+        <span className="storefront-filters-trigger__results">
+          {matchingProductsCount} productos disponibles
+        </span>
       </div>
+
+      {activeFilterChips.length > 0 ? (
+        <div className="storefront-active-filters" aria-label="Filtros activos">
+          {activeFilterChips.map((chip) => (
+            <button
+              key={chip.label}
+              type="button"
+              className="storefront-active-filter"
+              onClick={chip.onClear}
+              aria-label={`Quitar filtro ${chip.label}`}
+            >
+              <span>{chip.label}</span>
+              <strong aria-hidden="true">x</strong>
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       <IonModal
         isOpen={isMobileFilterOpen}
@@ -190,7 +230,7 @@ export function ProductFiltersView({
           <div className="storefront-filters-modal__header">
             <div>
               <span className="storefront-section__eyebrow">Filtros</span>
-              <h2>Encuentra tu cafe ideal</h2>
+              <h2>Encuentra tu café ideal</h2>
             </div>
             <IonButton
               type="button"
@@ -202,13 +242,13 @@ export function ProductFiltersView({
               Limpiar
             </IonButton>
           </div>
-          {filterGroups}
+          {renderFilterGroups()}
           <IonButton
             type="button"
             className="storefront-filters-modal__done"
             onClick={() => setIsMobileFilterOpen(false)}
           >
-            Ver productos
+            Ver {matchingProductsCount} productos
           </IonButton>
         </div>
       </IonModal>

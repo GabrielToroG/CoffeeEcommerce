@@ -1,4 +1,3 @@
-import { authApi } from '../api/authApi';
 import type { AuthUserDTO } from '../entities/AuthUserDTO';
 import type { AuthAddressModel } from '../../domain/entities/AuthAddressModel';
 import type { AuthOrderItemModel } from '../../domain/entities/AuthOrderItemModel';
@@ -8,8 +7,16 @@ import type {
   AddAddressParams,
   AuthRepository,
   LoginParams,
+  RegisterOrderParams,
   RegisterUserParams,
 } from '../../domain/repositories/authRepository';
+import type {
+  AddAuthAddressPayloadDTO,
+  AuthDataSourceProtocol,
+  LoginAuthPayloadDTO,
+  RegisterAuthOrderPayloadDTO,
+  RegisterAuthPayloadDTO,
+} from '../dataSources/authDataSourceProtocol';
 
 function mapAddress(address: AuthUserDTO['addresses'][number]): AuthAddressModel {
   return {
@@ -51,49 +58,74 @@ function mapUser(user: AuthUserDTO): AuthUserModel {
   };
 }
 
-export const localAuthRepository: AuthRepository = {
-  async getCurrentUser() {
-    const user = await authApi.getCurrentUser();
-    return user ? mapUser(user) : null;
-  },
+function mapLoginPayload(params: LoginParams): LoginAuthPayloadDTO {
+  return {
+    email: params.email,
+    password: params.password,
+  };
+}
 
-  async login(params: LoginParams) {
-    const user = await authApi.login(params.email, params.password);
-    return mapUser(user);
-  },
+function mapRegisterPayload(params: RegisterUserParams): RegisterAuthPayloadDTO {
+  return {
+    fullName: params.fullName,
+    email: params.email,
+    address: params.address,
+    password: params.password,
+  };
+}
 
-  async register(params: RegisterUserParams) {
-    const user = await authApi.register(
-      params.fullName,
-      params.email,
-      params.address,
-      params.password,
-    );
-    return mapUser(user);
-  },
+function mapAddAddressPayload(params: AddAddressParams): AddAuthAddressPayloadDTO {
+  return {
+    label: params.label,
+    fullAddress: params.fullAddress,
+    setAsDefault: params.setAsDefault,
+  };
+}
 
-  async addAddress(params: AddAddressParams) {
-    const user = await authApi.addAddress(params.label, params.fullAddress, params.setAsDefault);
-    return user ? mapUser(user) : null;
-  },
+function mapRegisterOrderPayload(params: RegisterOrderParams): RegisterAuthOrderPayloadDTO {
+  return {
+    total: params.total,
+    itemsCount: params.itemsCount,
+    paymentMethod: params.paymentMethod,
+    deliveryAddress: params.deliveryAddress,
+    items: params.items,
+  };
+}
 
-  async setDefaultAddress(addressId: string) {
-    const user = await authApi.setDefaultAddress(addressId);
-    return user ? mapUser(user) : null;
-  },
+export function createLocalAuthRepository(dataSource: AuthDataSourceProtocol): AuthRepository {
+  return {
+    async getCurrentUser() {
+      const user = await dataSource.getCurrentUser();
+      return user ? mapUser(user) : null;
+    },
 
-  async registerOrder(params) {
-    const user = await authApi.registerOrder(
-      params.total,
-      params.itemsCount,
-      params.paymentMethod,
-      params.deliveryAddress,
-      params.items,
-    );
-    return user ? mapUser(user) : null;
-  },
+    async login(params: LoginParams) {
+      const user = await dataSource.login(mapLoginPayload(params));
+      return mapUser(user);
+    },
 
-  async logout() {
-    await authApi.logout();
-  },
-};
+    async register(params: RegisterUserParams) {
+      const user = await dataSource.register(mapRegisterPayload(params));
+      return mapUser(user);
+    },
+
+    async addAddress(params: AddAddressParams) {
+      const user = await dataSource.addAddress(mapAddAddressPayload(params));
+      return user ? mapUser(user) : null;
+    },
+
+    async setDefaultAddress(addressId: string) {
+      const user = await dataSource.setDefaultAddress(addressId);
+      return user ? mapUser(user) : null;
+    },
+
+    async registerOrder(params: RegisterOrderParams) {
+      const user = await dataSource.registerOrder(mapRegisterOrderPayload(params));
+      return user ? mapUser(user) : null;
+    },
+
+    async logout() {
+      await dataSource.logout();
+    },
+  };
+}

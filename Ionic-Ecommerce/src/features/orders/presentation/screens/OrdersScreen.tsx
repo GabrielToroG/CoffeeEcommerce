@@ -1,9 +1,12 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { AuthHeaderPanelView } from '../../../auth/presentation/components/AuthHeaderPanelView';
 import { useAuth } from '../../../auth/presentation/hooks/useAuth';
-import { BrandHomeLinkView } from '../../../../core/presentation/components/molecules/brandHomeLink/BrandHomeLinkView';
-import { useOrders } from '../hooks/useOrders';
+import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/useCases/deriveSelectedDeliveryAddressLabelUseCase';
+import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
+import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
+import { useCart } from '../../../cart/presentation/hooks/useCart';
+import { useOrders } from '../../composition/useOrders';
 import './OrdersScreen.css';
 
 function formatCurrency(value: number) {
@@ -17,24 +20,29 @@ function formatCurrency(value: number) {
 export function OrdersScreen() {
   const history = useHistory();
   const { session } = useAuth();
+  const { cartSummary } = useCart();
   const { orders } = useOrders(session.user);
   const { isAuthenticated, user } = session;
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <BrandHomeLinkView />
-          <AuthHeaderPanelView />
-        </IonToolbar>
-      </IonHeader>
+      <DesktopTopHeaderView
+        deliveryAddressLabel={deriveSelectedDeliveryAddressLabelUseCase(session.user)}
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+        accountActions={<AuthHeaderPanelView />}
+      />
+      <MobileTopHeaderView
+        cartItemsCount={cartSummary.totalItems}
+        onCartClick={() => history.push('/checkout')}
+      />
 
       <IonContent fullscreen>
         <div className="orders-shell">
           {!isAuthenticated ? (
             <section className="orders-empty">
               <span className="orders-eyebrow">Pedidos</span>
-              <h1>Inicia sesion para ver tus compras</h1>
+              <h1>Inicia sesión para ver tus compras</h1>
               <p>Tu historial de pedidos aparecera aqui cuando tengas una cuenta activa.</p>
               <IonButton
                 type="button"
@@ -70,7 +78,7 @@ export function OrdersScreen() {
 
                         <div className="orders-card__info">
                           <div>
-                            <span>Direccion</span>
+                            <span>Dirección</span>
                             <strong>{order.deliveryAddress}</strong>
                           </div>
                           <div>
