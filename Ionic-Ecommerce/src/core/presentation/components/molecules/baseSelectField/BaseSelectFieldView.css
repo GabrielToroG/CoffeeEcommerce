@@ -1,4 +1,4 @@
 .base-select-field {
   display: grid;
-  gap: 8px;
+  gap: var(--form-field-gap);
 }

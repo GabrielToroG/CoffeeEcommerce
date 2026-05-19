@@ -18,7 +18,7 @@ export function MobileAppNavigationView() {
   return (
     <IonFooter className="mobile-app-navigation">
       <IonToolbar>
-        <nav className="mobile-app-navigation__items" aria-label="Navegacion principal">
+        <nav className="mobile-app-navigation__items" aria-label="Navegación principal">
           {navigationItems.map((item) => {
             const isActive =
               location.pathname === item.path ||

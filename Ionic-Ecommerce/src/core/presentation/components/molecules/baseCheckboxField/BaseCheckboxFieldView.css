@@ -1,7 +1,7 @@
 .base-checkbox-field {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 10px;
+  gap: var(--list-item-icon-gap);
   align-items: start;
   color: #26170f;
 }
@@ -14,7 +14,7 @@
 
 .base-checkbox-field__content {
   display: grid;
-  gap: 2px;
+  gap: var(--control-icon-label-gap);
 }
 
 .base-checkbox-field__content strong {

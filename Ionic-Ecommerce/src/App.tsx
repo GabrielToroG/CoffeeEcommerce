@@ -1,7 +1,7 @@
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AuthProvider } from './features/auth/presentation/hooks/useAuth';
-import { CartProvider } from './features/cart/presentation/hooks/useCart';
+import { AuthProvider } from './features/auth/composition/AuthProvider';
+import { CartProvider } from './features/cart/composition/CartProvider';
 import { AppRouter } from './core/router/AppRouter';
 import { MobileMenuView } from './core/presentation/components/organisms/mobileMenu/MobileMenuView';
 import { MobileAppNavigationView } from './core/presentation/components/organisms/mobileAppNavigation/MobileAppNavigationView';

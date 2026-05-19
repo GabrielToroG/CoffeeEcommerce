@@ -4,24 +4,30 @@
 
 @media (max-width: 767px) {
   .mobile-app-navigation {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
     display: block;
     --background: rgba(255, 250, 244, 0.96);
     border-top: 1px solid rgba(95, 61, 46, 0.12);
+    box-shadow: 0 -8px 24px rgba(45, 31, 25, 0.1);
     backdrop-filter: blur(18px);
   }
 
   .mobile-app-navigation ion-toolbar {
     --background: rgba(255, 250, 244, 0.96);
     --border-color: transparent;
-    --min-height: 62px;
-    padding-bottom: max(4px, env(safe-area-inset-bottom));
+    --min-height: var(--app-mobile-bottom-nav-height);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .mobile-app-navigation__items {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    padding: 4px 8px 2px;
+    gap: var(--control-cluster-gap);
+    padding: 5px 8px;
   }
 
   .mobile-app-navigation__item {
@@ -29,7 +35,7 @@
     --background-activated: rgba(95, 61, 46, 0.08);
     --background-focused: rgba(95, 61, 46, 0.08);
     --background-hover: rgba(95, 61, 46, 0.08);
-    --border-radius: 8px;
+    --border-radius: var(--control-radius);
     --box-shadow: none;
     --color: #4f372c;
     --padding-bottom: 6px;
@@ -45,7 +51,7 @@
   .mobile-app-navigation__item::part(native) {
     display: grid;
     justify-items: center;
-    gap: 2px;
+    gap: var(--control-icon-label-gap);
     line-height: 1;
   }
 

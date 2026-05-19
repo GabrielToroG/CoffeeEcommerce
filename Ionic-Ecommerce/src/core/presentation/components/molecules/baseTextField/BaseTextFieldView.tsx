@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { BaseInputView } from '../../atoms/baseInput/BaseInputView';
 import { BaseTextareaView } from '../../atoms/baseTextarea/BaseTextareaView';
 import { FieldLabelView } from '../../atoms/fieldLabel/FieldLabelView';
@@ -24,17 +25,19 @@ export function BaseTextFieldView({
   multiline = false,
   rows = 4,
 }: BaseTextFieldProps) {
+  const labelId = useId();
   const wrapperClassName = className ? `base-text-field ${className}` : 'base-text-field';
 
   return (
-    <label className={wrapperClassName}>
-      <FieldLabelView>{label}</FieldLabelView>
+    <div className={wrapperClassName}>
+      <FieldLabelView id={labelId}>{label}</FieldLabelView>
       {multiline ? (
         <BaseTextareaView
           rows={rows}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          ariaLabelledBy={labelId}
         />
       ) : (
         <BaseInputView
@@ -42,8 +45,9 @@ export function BaseTextFieldView({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          ariaLabelledBy={labelId}
         />
       )}
-    </label>
+    </div>
   );
 }

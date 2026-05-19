@@ -2,13 +2,13 @@
   width: 100%;
   --background: #fff;
   --border-color: rgba(95, 61, 46, 0.18);
-  --border-radius: 18px;
+  --border-radius: var(--control-field-radius);
   --border-width: 1px;
   --highlight-color-focused: rgba(140, 93, 60, 0.5);
-  --padding-bottom: 14px;
-  --padding-end: 16px;
-  --padding-start: 16px;
-  --padding-top: 14px;
+  --padding-bottom: var(--control-field-padding-block);
+  --padding-end: var(--control-field-padding-inline);
+  --padding-start: var(--control-field-padding-inline);
+  --padding-top: var(--control-field-padding-block);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   color: #26170f;
@@ -18,5 +18,5 @@
 
 .base-select.select-expanded {
   border-color: rgba(140, 93, 60, 0.5);
-  box-shadow: 0 0 0 3px rgba(212, 164, 116, 0.18);
+  box-shadow: var(--control-focus-ring);
 }

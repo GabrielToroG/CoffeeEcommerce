@@ -5,7 +5,7 @@
 
 .mobile-menu__header {
   display: grid;
-  gap: 4px;
+  gap: var(--control-icon-label-gap);
   padding: 22px 20px 16px;
   color: #26170f;
 }
@@ -28,16 +28,42 @@
 
 .mobile-menu__item {
   --background: transparent;
-  --background-activated: #f3e6d8;
-  --background-focused: #f3e6d8;
-  --background-hover: #f3e6d8;
-  --border-radius: 8px;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  --background-hover: transparent;
+  --border-radius: var(--control-radius);
   --color: #2d1f19;
   --min-height: 46px;
   --padding-end: 12px;
   --padding-start: 12px;
+  border-radius: var(--control-radius);
   margin-bottom: 4px;
   font-weight: 700;
+  overflow: hidden;
+}
+
+.mobile-menu__item::part(native) {
+  border-radius: var(--control-radius);
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.mobile-menu__item:hover::part(native),
+.mobile-menu__item:focus-visible::part(native) {
+  background: #f3e6d8;
+  color: #2d1f19;
+}
+
+.mobile-menu__item--active::part(native) {
+  background: #2d1f19;
+  color: #fff7ee;
+}
+
+.mobile-menu__item--active:hover::part(native),
+.mobile-menu__item--active:focus-visible::part(native) {
+  background: #4a3328;
+  color: #fff7ee;
 }
 
 @media (min-width: 768px) {

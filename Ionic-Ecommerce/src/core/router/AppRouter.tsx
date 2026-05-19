@@ -1,5 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonRouterOutlet } from '@ionic/react';
+import { IonRouterOutlet, IonSpinner } from '@ionic/react';
+import { useAuth } from '../../features/auth/presentation/hooks/useAuth';
 import { AccountAddressesScreen } from '../../features/account/presentation/screens/AccountAddressesScreen';
 import { AccountHomeScreen } from '../../features/account/presentation/screens/AccountHomeScreen';
 import { AccountProfileScreen } from '../../features/account/presentation/screens/AccountProfileScreen';
@@ -8,6 +9,29 @@ import { CheckoutScreen } from '../../features/checkout/presentation/screens/Che
 import { OrdersScreen } from '../../features/orders/presentation/screens/OrdersScreen';
 import { StorefrontProductDetailScreen } from '../../features/storefront/presentation/screens/StorefrontProductDetailScreen';
 import { StorefrontScreen } from '../../features/storefront/presentation/screens/StorefrontScreen';
+
+function RouteLoadingFallback() {
+  return (
+    <div className="app-route-loading" role="status">
+      <IonSpinner name="crescent" />
+      <p>Cargando...</p>
+    </div>
+  );
+}
+
+function AdminCatalogRoute() {
+  const { session, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <RouteLoadingFallback />;
+  }
+
+  if (!session.isAuthenticated || session.user?.role !== 'admin') {
+    return <Redirect to="/store" />;
+  }
+
+  return <AdminCatalogScreen />;
+}
 
 export function AppRouter() {
   return (
@@ -25,7 +49,7 @@ export function AppRouter() {
         <OrdersScreen />
       </Route>
       <Route exact path="/admin/catalog">
-        <AdminCatalogScreen />
+        <AdminCatalogRoute />
       </Route>
       <Route exact path="/account/addresses">
         <AccountAddressesScreen />

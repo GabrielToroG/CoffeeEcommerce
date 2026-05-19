@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { BaseSelectView, type BaseSelectViewOption } from '../../atoms/baseSelect/BaseSelectView';
 import { FieldLabelView } from '../../atoms/fieldLabel/FieldLabelView';
 import './BaseSelectFieldView.css';
@@ -15,10 +16,17 @@ export function BaseSelectFieldView({
   onChange,
   options,
 }: BaseSelectFieldProps) {
+  const labelId = useId();
+
   return (
-    <label className="base-select-field">
-      <FieldLabelView>{label}</FieldLabelView>
-      <BaseSelectView value={value} onChange={onChange} options={options} />
-    </label>
+    <div className="base-select-field">
+      <FieldLabelView id={labelId}>{label}</FieldLabelView>
+      <BaseSelectView
+        value={value}
+        onChange={onChange}
+        options={options}
+        ariaLabelledBy={labelId}
+      />
+    </div>
   );
 }

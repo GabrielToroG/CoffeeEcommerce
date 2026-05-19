@@ -1,0 +1,132 @@
+.mobile-top-header {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .desktop-app-header {
+    display: none;
+  }
+
+  .mobile-top-header {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    display: block;
+    border-bottom: 1px solid rgba(95, 61, 46, 0.12);
+    backdrop-filter: blur(18px);
+  }
+
+  .mobile-top-header ion-toolbar {
+    --background: rgba(255, 250, 244, 0.96);
+    --border-color: transparent;
+    --color: #22160f;
+    --min-height: calc(58px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .mobile-top-header__content {
+    display: grid;
+    grid-template-columns: var(--tap-target-m) minmax(0, 1fr) var(--tap-target-m);
+    align-items: center;
+    column-gap: var(--space-xs);
+    padding-inline: var(--space-s);
+    min-height: 58px;
+  }
+
+  .mobile-top-header__menu {
+    grid-column: 1;
+    --background: transparent;
+    --background-activated: rgba(95, 61, 46, 0.08);
+    --background-focused: rgba(95, 61, 46, 0.08);
+    --background-hover: rgba(95, 61, 46, 0.08);
+    --border-radius: var(--radius-m);
+    --color: #22160f;
+    width: var(--tap-target-m);
+    height: var(--tap-target-m);
+    margin: 0;
+  }
+
+  .mobile-top-header__menu ion-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mobile-top-header__brand {
+    grid-column: 2;
+    justify-self: start;
+    --background: transparent;
+    --background-activated: rgba(95, 61, 46, 0.08);
+    --background-hover: rgba(95, 61, 46, 0.08);
+    --box-shadow: none;
+    --color: #22160f;
+    --padding-bottom: 0;
+    --padding-end: 0;
+    --padding-start: 0;
+    --padding-top: 0;
+    min-width: 0;
+    max-width: 100%;
+    height: var(--tap-target-m);
+    margin: 0;
+    overflow: hidden;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: none;
+  }
+
+  .mobile-top-header__brand::part(native) {
+    overflow: hidden;
+    justify-content: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-top-header__actions {
+    grid-column: 3;
+    justify-self: end;
+  }
+
+  .mobile-top-header__cart {
+    justify-self: end;
+    --background: #f4d7b6;
+    --background-activated: #e9c89f;
+    --background-hover: #e9c89f;
+    --border-radius: var(--radius-m);
+    --box-shadow: none;
+    --color: #22160f;
+    --padding-bottom: 0;
+    --padding-end: 0;
+    --padding-start: 0;
+    --padding-top: 0;
+    position: relative;
+    grid-column: 3;
+    width: var(--tap-target-m);
+    height: var(--tap-target-m);
+    overflow: visible;
+    margin: 0;
+    min-height: var(--tap-target-m);
+  }
+
+  .mobile-top-header__cart ion-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mobile-top-header__cart-badge {
+    --background: #2d1f19;
+    --color: #fff7ee;
+    position: absolute;
+    top: var(--space-2xs);
+    right: var(--space-2xs);
+    display: inline-grid;
+    min-width: 18px;
+    height: 18px;
+    place-items: center;
+    padding: 0 5px;
+    border: 2px solid #fffaf4;
+    border-radius: var(--control-pill-radius);
+    font-size: 0.64rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+}

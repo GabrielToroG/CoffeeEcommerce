@@ -2,6 +2,66 @@
 http://ionicframework.com/docs/theming/ */
 
 :root {
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-l: 24px;
+  --space-xl: 32px;
+  --space-2xl: 40px;
+  --space-3xl: 48px;
+
+  --margin-2xs: var(--space-2xs);
+  --margin-xs: var(--space-xs);
+  --margin-s: var(--space-s);
+  --margin-m: var(--space-m);
+  --margin-l: var(--space-l);
+  --margin-xl: var(--space-xl);
+  --margin-2xl: var(--space-2xl);
+
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  --tap-target-s: 40px;
+  --tap-target-m: 44px;
+  --tap-target-l: 48px;
+
+  --shadow-s: 0 10px 24px rgba(61, 38, 28, 0.08);
+  --shadow-m: 0 18px 44px rgba(61, 38, 28, 0.12);
+  --shadow-m-soft: 0 18px 44px rgba(61, 38, 28, 0.1);
+  --shadow-floating: 0 16px 34px rgba(45, 31, 25, 0.18);
+
+  --surface-panel-padding: var(--space-l);
+  --surface-panel-padding-mobile: 18px;
+  --surface-panel-radius: 28px;
+  --surface-panel-radius-mobile: var(--radius-m);
+  --surface-panel-shadow: var(--shadow-m);
+  --surface-card-padding: var(--space-s);
+  --surface-card-radius: var(--radius-m);
+  --surface-card-radius-large: var(--radius-xl);
+  --surface-card-shadow: var(--shadow-s);
+  --surface-floating-shadow: var(--shadow-floating);
+
+  --control-pill-radius: var(--radius-pill);
+  --control-radius: var(--radius-m);
+  --control-field-radius: var(--radius-l);
+  --control-field-padding-block: 14px;
+  --control-field-padding-inline: var(--space-m);
+  --control-focus-ring: 0 0 0 3px rgba(212, 164, 116, 0.18);
+  --control-icon-text-gap: var(--space-xs);
+  --control-icon-label-gap: var(--space-2xs);
+  --control-inline-gap: var(--space-s);
+  --control-cluster-gap: var(--space-xs);
+  --control-badge-gap: var(--space-xs);
+  --form-field-gap: var(--space-xs);
+  --list-item-icon-gap: var(--space-s);
+  --section-gap: var(--space-m);
+  --product-grid-gap: 18px;
+  --product-grid-gap-mobile: 14px;
+
   --ion-color-primary: #6f462b;
   --ion-color-primary-rgb: 111, 70, 43;
   --ion-color-primary-contrast: #fff7ee;
@@ -16,4 +76,25 @@ http://ionicframework.com/docs/theming/ */
   --ion-toolbar-background: rgba(252, 250, 247, 0.9);
   --ion-toolbar-color: #22160f;
   --ion-font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+
+  --app-mobile-bottom-nav-height: calc(64px + env(safe-area-inset-bottom));
+  --app-mobile-bottom-nav-gap: var(--space-s);
+  --app-mobile-floating-bar-height: 96px;
+  --app-mobile-content-bottom-padding: calc(
+    var(--app-mobile-bottom-nav-height) + var(--app-mobile-bottom-nav-gap) + 36px
+  );
+  --app-mobile-stacked-content-bottom-padding: calc(
+    var(--app-mobile-content-bottom-padding) + var(--app-mobile-floating-bar-height)
+  );
+}
+
+.app-route-loading {
+  min-height: 100%;
+  display: grid;
+  place-content: center;
+  gap: var(--control-inline-gap);
+  padding: var(--space-xl);
+  background: #fcfaf7;
+  color: #5d463a;
+  text-align: center;
 }

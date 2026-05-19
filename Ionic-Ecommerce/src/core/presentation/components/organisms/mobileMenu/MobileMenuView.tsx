@@ -6,6 +6,7 @@ import {
   IonMenu,
   IonMenuToggle,
 } from '@ionic/react';
+import { useLocation } from 'react-router-dom';
 import './MobileMenuView.css';
 
 const navigationItems = [
@@ -17,6 +18,8 @@ const navigationItems = [
 ];
 
 export function MobileMenuView() {
+  const location = useLocation();
+
   return (
     <IonMenu
       contentId="main-content"
@@ -27,7 +30,7 @@ export function MobileMenuView() {
       <IonContent>
         <div className="mobile-menu__header">
           <span>Brew Market</span>
-          <strong>Navegacion</strong>
+          <strong>Navegación</strong>
         </div>
         <IonList className="mobile-menu__list" lines="none">
           {navigationItems.map((item) => (
@@ -36,7 +39,10 @@ export function MobileMenuView() {
                 button
                 routerLink={item.path}
                 routerDirection="root"
-                className="mobile-menu__item"
+                className={`mobile-menu__item ${
+                  location.pathname === item.path ? 'mobile-menu__item--active' : ''
+                }`}
+                aria-current={location.pathname === item.path ? 'page' : undefined}
               >
                 <IonLabel>{item.label}</IonLabel>
               </IonItem>

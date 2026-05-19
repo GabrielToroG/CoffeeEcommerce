@@ -10,12 +10,14 @@ type BaseSelectProps = {
   value: string;
   onChange: (value: string) => void;
   options: BaseSelectViewOption[];
+  ariaLabelledBy?: string;
 };
 
 export function BaseSelectView({
   value,
   onChange,
   options,
+  ariaLabelledBy,
 }: BaseSelectProps) {
   return (
     <IonSelect
@@ -23,6 +25,7 @@ export function BaseSelectView({
       value={value}
       interface="popover"
       onIonChange={(event) => onChange(String(event.detail.value ?? ''))}
+      aria-labelledby={ariaLabelledBy}
     >
       {options.map((option) => (
         <IonSelectOption key={option.value} value={option.value}>

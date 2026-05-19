@@ -4,9 +4,9 @@
   width: fit-content;
   max-width: 100%;
   height: 28px;
-  padding: 0 8px;
+  padding: 0 var(--space-xs);
   border: 1px solid rgba(95, 61, 46, 0.1);
-  border-radius: 6px;
+  border-radius: var(--radius-s);
   background: #faf4ed;
   color: #5f3d2e;
   font-size: 0.72rem;

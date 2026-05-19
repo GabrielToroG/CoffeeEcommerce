@@ -4,6 +4,7 @@ import './BaseInputView.css';
 type BaseInputProps = {
   value: string;
   onChange: (value: string) => void;
+  ariaLabelledBy?: string;
   placeholder?: string;
   type?: 'text' | 'email' | 'password' | 'number';
 };
@@ -11,6 +12,7 @@ type BaseInputProps = {
 export function BaseInputView({
   value,
   onChange,
+  ariaLabelledBy,
   placeholder,
   type = 'text',
 }: BaseInputProps) {
@@ -21,6 +23,7 @@ export function BaseInputView({
       value={value}
       onIonInput={(event) => onChange(String(event.detail.value ?? ''))}
       placeholder={placeholder}
+      aria-labelledby={ariaLabelledBy}
     />
   );
 }
