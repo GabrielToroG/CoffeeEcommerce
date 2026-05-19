@@ -1,4 +1,5 @@
-import { IonButton } from '@ionic/react';
+import { IonAlert, IonButton } from '@ionic/react';
+import { useState } from 'react';
 import { formatCurrency } from '../../../storefront/presentation/utils/formatCurrency';
 import type { AdminCatalogOptionModel } from '../../domain/entities/AdminCatalogOptionModel';
 import type { AdminProductModel } from '../../domain/entities/AdminProductModel';
@@ -22,6 +23,7 @@ export function AdminProductListView({
   onEditProduct,
   onDeleteProduct,
 }: AdminProductListProps) {
+  const [pendingDeleteProduct, setPendingDeleteProduct] = useState<AdminProductModel | null>(null);
   const categoriesById = new Map(categories.map((category) => [category.id, category.label]));
   const collectionsById = new Map(collections.map((collection) => [collection.id, collection.label]));
 
@@ -78,7 +80,7 @@ export function AdminProductListView({
                 <IonButton
                   type="button"
                   className="admin-button admin-button--danger"
-                  onClick={() => onDeleteProduct(product.id)}
+                  onClick={() => setPendingDeleteProduct(product)}
                   disabled={isSubmitting}
                 >
                   Eliminar
@@ -88,6 +90,36 @@ export function AdminProductListView({
           </article>
         ))}
       </div>
+
+      <IonAlert
+        isOpen={pendingDeleteProduct !== null}
+        onDidDismiss={() => setPendingDeleteProduct(null)}
+        header="Confirmar eliminación"
+        message={
+          pendingDeleteProduct
+            ? `Eliminar "${pendingDeleteProduct.name}" del catálogo hará que deje de aparecer en tienda.`
+            : ''
+        }
+        buttons={[
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => setPendingDeleteProduct(null),
+          },
+          {
+            text: 'Eliminar',
+            role: 'destructive',
+            handler: () => {
+              if (!pendingDeleteProduct) {
+                return;
+              }
+
+              onDeleteProduct(pendingDeleteProduct.id);
+              setPendingDeleteProduct(null);
+            },
+          },
+        ]}
+      />
     </section>
   );
 }

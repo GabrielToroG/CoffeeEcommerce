@@ -1,17 +1,15 @@
 .account-shell {
   min-height: 100%;
   padding: 24px 16px 40px;
-  background:
-    radial-gradient(circle at top left, rgba(212, 164, 116, 0.18), transparent 24%),
-    linear-gradient(180deg, #fbf5ef 0%, #f7efe7 48%, #efe2d3 100%);
-  color: #26170f;
+  background: var(--app-gradient-page);
+  color: var(--app-text);
 }
 
 .account-panel,
 .account-empty {
   padding: var(--surface-panel-padding);
   border-radius: var(--surface-panel-radius);
-  background: rgba(255, 252, 248, 0.94);
+  background: var(--app-panel-bg-strong);
   box-shadow: var(--surface-panel-shadow);
 }
 
@@ -21,7 +19,7 @@
   letter-spacing: 0.08em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #8c5d3c;
+  color: var(--app-text-soft);
 }
 
 .account-panel h1,
@@ -33,7 +31,7 @@
 .account-panel p,
 .account-empty p {
   margin: 0;
-  color: #6f5648;
+  color: var(--app-text-muted);
 }
 
 .account-empty__actions {
@@ -70,9 +68,9 @@
   align-items: center;
   gap: var(--section-gap);
   padding: 20px;
-  border: 1px solid rgba(95, 61, 46, 0.12);
+  border: 1px solid var(--app-border);
   border-radius: var(--surface-card-radius);
-  background: rgba(255, 252, 248, 0.94);
+  background: var(--app-panel-bg-strong);
   box-shadow: var(--shadow-m-soft);
 }
 
@@ -83,8 +81,8 @@
   height: 58px;
   place-items: center;
   border-radius: var(--surface-card-radius);
-  background: #2d1f19;
-  color: #fff7ee;
+  background: var(--app-accent);
+  color: var(--app-accent-contrast);
 }
 
 .account-home__avatar span {
@@ -94,14 +92,14 @@
 
 .account-home__hero h1 {
   margin: 5px 0 3px;
-  color: #26170f;
+  color: var(--app-text);
   font-size: 1.6rem;
   line-height: 1.12;
 }
 
 .account-home__hero p {
   margin: 0;
-  color: #6f5648;
+  color: var(--app-text-muted);
 }
 
 .account-home__options {
@@ -113,21 +111,21 @@
 }
 
 .account-home__option {
-  --background: rgba(255, 252, 248, 0.94);
-  --background-activated: #fbf3ea;
-  --background-hover: #fbf3ea;
+  --background: var(--app-panel-bg-strong);
+  --background-activated: var(--app-card-bg-muted);
+  --background-hover: var(--app-card-bg-muted);
   --border-radius: var(--control-radius);
-  --color: #26170f;
-  --detail-icon-color: #7b5135;
+  --color: var(--app-text);
+  --detail-icon-color: var(--app-text-soft);
   --detail-icon-opacity: 0.62;
   --inner-padding-bottom: 14px;
   --inner-padding-end: 14px;
   --inner-padding-top: 14px;
   --min-height: 76px;
   --padding-start: 14px;
-  border: 1px solid rgba(95, 61, 46, 0.12);
+  border: 1px solid var(--app-border);
   border-radius: var(--surface-card-radius);
-  box-shadow: 0 8px 22px rgba(61, 38, 28, 0.06);
+  box-shadow: var(--shadow-s);
   margin: 0;
   overflow: hidden;
 }
@@ -135,7 +133,7 @@
 .account-home__option ion-icon {
   width: 22px;
   height: 22px;
-  color: #7b5135;
+  color: var(--app-text-soft);
 }
 
 .account-home__option ion-label {
@@ -144,7 +142,7 @@
 
 .account-home__option h2 {
   margin: 0 0 4px;
-  color: #26170f;
+  color: var(--app-text);
   font-size: 1rem;
   font-weight: 800;
   line-height: 1.2;
@@ -152,15 +150,15 @@
 
 .account-home__option p {
   margin: 0;
-  color: #6f5648;
+  color: var(--app-text-muted);
   font-size: 0.86rem;
   line-height: 1.32;
   white-space: normal;
 }
 
 .account-home__option-badge {
-  --background: #2d1f19;
-  color: #fff7ee;
+  --background: var(--app-badge-bg);
+  color: var(--app-badge-text);
   min-width: 28px;
   height: 28px;
   padding: 7px 9px;
@@ -198,15 +196,15 @@
 .account-field .field-label {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #5c3b2a;
+  color: var(--app-text-soft);
 }
 
 .account-field .base-input,
 .account-field .base-textarea {
-  border: 1px solid rgba(95, 61, 46, 0.14);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
-  background: #fffdfa;
-  color: #26170f;
+  background: var(--app-input-bg);
+  color: var(--app-text);
 }
 
 .account-feedback {
@@ -215,11 +213,11 @@
 }
 
 .account-feedback--error {
-  color: #a33f2f;
+  color: var(--app-danger);
 }
 
 .account-feedback--success {
-  color: #396048;
+  color: var(--app-success);
 }
 
 .account-card {
@@ -227,12 +225,12 @@
   gap: var(--control-icon-label-gap);
   padding: 14px 16px;
   border-radius: var(--radius-l);
-  background: #fff;
-  border: 1px solid rgba(95, 61, 46, 0.1);
+  background: var(--app-card-bg-strong);
+  border: 1px solid var(--app-border);
 }
 
 .account-card span {
-  color: #6f5648;
+  color: var(--app-text-muted);
 }
 
 .account-card__header {
@@ -248,8 +246,8 @@
   justify-content: center;
   padding: 4px 10px;
   border-radius: var(--control-pill-radius);
-  background: rgba(45, 31, 25, 0.1);
-  color: #2d1f19;
+  background: var(--app-accent-soft);
+  color: var(--app-accent-contrast);
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -269,18 +267,18 @@
 }
 
 .account-button--primary {
-  --background: #2d1f19;
-  --background-activated: #4a3328;
-  --background-hover: #4a3328;
-  --color: #fff7ee;
+  --background: var(--app-accent);
+  --background-activated: var(--app-accent-strong);
+  --background-hover: var(--app-accent-strong);
+  --color: var(--app-accent-contrast);
 }
 
 .account-button--secondary {
   margin-top: 10px;
-  --background: #efe3d4;
-  --background-activated: #dfcdb8;
-  --background-hover: #dfcdb8;
-  --color: #2d1f19;
+  --background: var(--app-surface-muted);
+  --background-activated: var(--app-accent-soft);
+  --background-hover: var(--app-accent-soft);
+  --color: var(--app-text);
 }
 
 @media (min-width: 960px) {

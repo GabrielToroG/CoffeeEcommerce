@@ -10,14 +10,14 @@
     left: 0;
     z-index: 100;
     display: block;
-    --background: rgba(255, 250, 244, 0.96);
-    border-top: 1px solid rgba(95, 61, 46, 0.12);
-    box-shadow: 0 -8px 24px rgba(45, 31, 25, 0.1);
+    --background: var(--app-surface-glass);
+    border-top: 1px solid var(--app-border);
+    box-shadow: var(--shadow-s);
     backdrop-filter: blur(18px);
   }
 
   .mobile-app-navigation ion-toolbar {
-    --background: rgba(255, 250, 244, 0.96);
+    --background: var(--app-surface-glass);
     --border-color: transparent;
     --min-height: var(--app-mobile-bottom-nav-height);
     padding-bottom: env(safe-area-inset-bottom);
@@ -32,12 +32,12 @@
 
   .mobile-app-navigation__item {
     --background: transparent;
-    --background-activated: rgba(95, 61, 46, 0.08);
-    --background-focused: rgba(95, 61, 46, 0.08);
-    --background-hover: rgba(95, 61, 46, 0.08);
+    --background-activated: var(--app-interactive-subtle);
+    --background-focused: var(--app-interactive-subtle);
+    --background-hover: var(--app-interactive-subtle);
     --border-radius: var(--control-radius);
     --box-shadow: none;
-    --color: #4f372c;
+    --color: var(--app-text-muted);
     --padding-bottom: 6px;
     --padding-end: 2px;
     --padding-start: 2px;
@@ -66,11 +66,11 @@
   }
 
   .mobile-app-navigation__item--active {
-    --background: #f4d7b6;
-    --background-activated: #e9c89f;
-    --background-focused: #e9c89f;
-    --background-hover: #e9c89f;
-    --color: #22160f;
+    --background: var(--app-accent-soft);
+    --background-activated: var(--app-accent-soft-hover);
+    --background-focused: var(--app-accent-soft-hover);
+    --background-hover: var(--app-accent-soft-hover);
+    --color: var(--app-accent-contrast);
     font-weight: 900;
   }
 }

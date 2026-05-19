@@ -18,7 +18,7 @@ import { BaseChipView } from '../../../../core/presentation/components/atoms/bas
 import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
 import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
 import { formatCurrency } from '../utils/formatCurrency';
-import { useStorefront } from '../../composition/useStorefront';
+import { useStorefront } from '../../composition/StorefrontModule';
 import './StorefrontProductDetailScreen.css';
 
 type ProductDetailRouteParams = {

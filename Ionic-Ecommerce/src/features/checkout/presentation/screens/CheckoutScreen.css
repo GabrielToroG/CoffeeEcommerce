@@ -1,10 +1,8 @@
 .checkout-shell {
   min-height: 100%;
   padding: 24px 16px 48px;
-  background:
-    radial-gradient(circle at top right, rgba(244, 215, 182, 0.28), transparent 26%),
-    linear-gradient(180deg, #fcf6ef 0%, #f8efe5 48%, #efe2d3 100%);
-  color: #26170f;
+  background: var(--app-gradient-page);
+  color: var(--app-text);
 }
 
 .checkout-layout {
@@ -18,7 +16,7 @@
 .checkout-success {
   padding: var(--surface-panel-padding);
   border-radius: var(--surface-panel-radius);
-  background: rgba(255, 252, 248, 0.92);
+  background: var(--app-panel-bg);
   box-shadow: var(--surface-panel-shadow);
 }
 
@@ -28,7 +26,7 @@
   letter-spacing: 0.08em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #8c5d3c;
+  color: var(--app-text-soft);
 }
 
 .checkout-panel h1,
@@ -42,7 +40,7 @@
 .checkout-empty p,
 .checkout-success p {
   margin: 0;
-  color: #6f5648;
+  color: var(--app-text-muted);
 }
 
 .checkout-form {
@@ -64,10 +62,10 @@
   gap: var(--control-icon-label-gap);
   min-height: 62px;
   padding: 8px 6px;
-  border: 1px solid rgba(95, 61, 46, 0.12);
+  border: 1px solid var(--app-border);
   border-radius: var(--control-radius);
-  background: #fff;
-  color: #6f5648;
+  background: var(--app-card-bg-strong);
+  color: var(--app-text-muted);
   font: inherit;
   font-size: 0.76rem;
   font-weight: 800;
@@ -80,21 +78,21 @@
   height: 24px;
   place-items: center;
   border-radius: var(--control-pill-radius);
-  background: #f3e6d8;
-  color: #5f3d2e;
+  background: var(--app-chip-bg-strong);
+  color: var(--app-text-soft);
   font-size: 0.76rem;
 }
 
 .checkout-step--active {
-  border-color: #2d1f19;
-  background: #2d1f19;
-  color: #fff7ee;
+  border-color: var(--app-accent);
+  background: var(--app-accent);
+  color: var(--app-accent-contrast);
 }
 
 .checkout-step--active span,
 .checkout-step--complete span {
-  background: #f4d7b6;
-  color: #2d1f19;
+  background: var(--app-accent-soft);
+  color: var(--app-accent-contrast);
 }
 
 .checkout-step-panel {
@@ -116,22 +114,22 @@
   gap: var(--control-icon-label-gap);
   padding: var(--surface-card-padding);
   border-radius: var(--surface-card-radius);
-  background: #fff;
+  background: var(--app-card-bg-strong);
 }
 
 .checkout-review span {
-  color: #8c5d3c;
+  color: var(--app-text-soft);
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .checkout-review strong {
-  color: #26170f;
+  color: var(--app-text);
 }
 
 .checkout-review small {
-  color: #6f5648;
+  color: var(--app-text-muted);
   font-size: 0.88rem;
 }
 
@@ -172,29 +170,29 @@
 }
 
 .checkout-button--primary {
-  --background: #2d1f19;
-  --background-activated: #4a3328;
-  --background-hover: #4a3328;
-  --color: #fff7ee;
+  --background: var(--app-accent);
+  --background-activated: var(--app-accent-strong);
+  --background-hover: var(--app-accent-strong);
+  --color: var(--app-accent-contrast);
 }
 
 .checkout-button--inactive {
-  --background: #baa998;
-  --color: rgba(255, 247, 238, 0.82);
-  --box-shadow: inset 0 0 0 1px rgba(45, 31, 25, 0.08);
+  --background: var(--app-surface-muted);
+  --color: var(--app-text-muted);
+  --box-shadow: inset 0 0 0 1px var(--app-border);
   filter: saturate(0.7);
 }
 
 .checkout-button--secondary {
-  --background: #f4d7b6;
-  --background-activated: #e9c89f;
-  --background-hover: #e9c89f;
-  --color: #2b1d15;
+  --background: var(--app-accent-soft);
+  --background-activated: var(--app-accent-soft-hover);
+  --background-hover: var(--app-accent-soft-hover);
+  --color: var(--app-accent-contrast);
 }
 
 .checkout-error {
   margin: 16px 0 0;
-  color: #a42828;
+  color: var(--app-danger);
   font-weight: 600;
 }
 
@@ -215,7 +213,7 @@
   align-items: center;
   padding: var(--surface-card-padding);
   border-radius: 20px;
-  background: #fff;
+  background: var(--app-card-bg-strong);
 }
 
 .checkout-summary__item img {
@@ -231,7 +229,7 @@
 }
 
 .checkout-summary__item span {
-  color: #6f5648;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
 }
 
@@ -242,7 +240,7 @@
   gap: var(--control-inline-gap);
   margin-top: 18px;
   padding-top: 18px;
-  border-top: 1px solid rgba(95, 61, 46, 0.14);
+  border-top: 1px solid var(--app-border);
 }
 
 .checkout-success {

@@ -2,6 +2,7 @@ import { IonInput } from '@ionic/react';
 import './BaseInputView.css';
 
 type BaseInputProps = {
+  inputId?: string;
   value: string;
   onChange: (value: string) => void;
   ariaLabelledBy?: string;
@@ -10,6 +11,7 @@ type BaseInputProps = {
 };
 
 export function BaseInputView({
+  inputId,
   value,
   onChange,
   ariaLabelledBy,
@@ -18,6 +20,7 @@ export function BaseInputView({
 }: BaseInputProps) {
   return (
     <IonInput
+      id={inputId}
       className="base-input"
       type={type}
       value={value}

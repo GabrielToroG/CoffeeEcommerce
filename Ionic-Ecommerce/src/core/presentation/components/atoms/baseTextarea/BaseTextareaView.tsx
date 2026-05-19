@@ -2,6 +2,7 @@ import { IonTextarea } from '@ionic/react';
 import './BaseTextareaView.css';
 
 type BaseTextareaProps = {
+  inputId?: string;
   value: string;
   onChange: (value: string) => void;
   ariaLabelledBy?: string;
@@ -10,6 +11,7 @@ type BaseTextareaProps = {
 };
 
 export function BaseTextareaView({
+  inputId,
   value,
   onChange,
   ariaLabelledBy,
@@ -18,6 +20,7 @@ export function BaseTextareaView({
 }: BaseTextareaProps) {
   return (
     <IonTextarea
+      id={inputId}
       className="base-textarea"
       rows={rows}
       value={value}

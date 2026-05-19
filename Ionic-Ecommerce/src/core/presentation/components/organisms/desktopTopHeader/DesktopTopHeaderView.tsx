@@ -10,6 +10,7 @@ import {
 } from '@ionic/react';
 import { bagHandleOutline, locationOutline } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ThemeToggleButtonView } from '../../atoms/themeToggle/ThemeToggleButtonView';
 import './DesktopTopHeaderView.css';
 
 type DesktopTopHeaderViewProps = {
@@ -68,6 +69,8 @@ export function DesktopTopHeaderView({
             <IonIcon icon={locationOutline} aria-hidden="true" />
             <span>{deliveryAddressLabel}</span>
           </IonButton>
+
+          <ThemeToggleButtonView className="desktop-top-header__theme-toggle" />
 
           <IonButton
             type="button"

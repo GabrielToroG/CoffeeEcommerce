@@ -12,21 +12,21 @@
     top: 0;
     z-index: 90;
     display: block;
-    border-bottom: 1px solid rgba(95, 61, 46, 0.12);
+    border-bottom: 1px solid var(--app-border);
     backdrop-filter: blur(18px);
   }
 
   .mobile-top-header ion-toolbar {
-    --background: rgba(255, 250, 244, 0.96);
+    --background: var(--app-surface-glass);
     --border-color: transparent;
-    --color: #22160f;
+    --color: var(--app-text);
     --min-height: calc(58px + env(safe-area-inset-top));
     padding-top: env(safe-area-inset-top);
   }
 
   .mobile-top-header__content {
     display: grid;
-    grid-template-columns: var(--tap-target-m) minmax(0, 1fr) var(--tap-target-m);
+    grid-template-columns: var(--tap-target-m) minmax(0, 1fr) var(--tap-target-m) var(--tap-target-m);
     align-items: center;
     column-gap: var(--space-xs);
     padding-inline: var(--space-s);
@@ -36,11 +36,11 @@
   .mobile-top-header__menu {
     grid-column: 1;
     --background: transparent;
-    --background-activated: rgba(95, 61, 46, 0.08);
-    --background-focused: rgba(95, 61, 46, 0.08);
-    --background-hover: rgba(95, 61, 46, 0.08);
+    --background-activated: var(--app-interactive-subtle);
+    --background-focused: var(--app-interactive-subtle);
+    --background-hover: var(--app-interactive-subtle);
     --border-radius: var(--radius-m);
-    --color: #22160f;
+    --color: var(--app-text);
     width: var(--tap-target-m);
     height: var(--tap-target-m);
     margin: 0;
@@ -55,10 +55,10 @@
     grid-column: 2;
     justify-self: start;
     --background: transparent;
-    --background-activated: rgba(95, 61, 46, 0.08);
-    --background-hover: rgba(95, 61, 46, 0.08);
+    --background-activated: var(--app-interactive-subtle);
+    --background-hover: var(--app-interactive-subtle);
     --box-shadow: none;
-    --color: #22160f;
+    --color: var(--app-text);
     --padding-bottom: 0;
     --padding-end: 0;
     --padding-start: 0;
@@ -81,25 +81,25 @@
     white-space: nowrap;
   }
 
-  .mobile-top-header__actions {
+  .mobile-top-header__theme-toggle {
     grid-column: 3;
     justify-self: end;
   }
 
   .mobile-top-header__cart {
     justify-self: end;
-    --background: #f4d7b6;
-    --background-activated: #e9c89f;
-    --background-hover: #e9c89f;
+    --background: var(--app-accent-soft);
+    --background-activated: var(--app-accent-soft-hover);
+    --background-hover: var(--app-accent-soft-hover);
     --border-radius: var(--radius-m);
     --box-shadow: none;
-    --color: #22160f;
+    --color: var(--app-accent-contrast);
     --padding-bottom: 0;
     --padding-end: 0;
     --padding-start: 0;
     --padding-top: 0;
     position: relative;
-    grid-column: 3;
+    grid-column: 4;
     width: var(--tap-target-m);
     height: var(--tap-target-m);
     overflow: visible;
@@ -113,8 +113,8 @@
   }
 
   .mobile-top-header__cart-badge {
-    --background: #2d1f19;
-    --color: #fff7ee;
+    --background: var(--app-badge-bg);
+    --color: var(--app-badge-text);
     position: absolute;
     top: var(--space-2xs);
     right: var(--space-2xs);
@@ -123,7 +123,7 @@
     height: 18px;
     place-items: center;
     padding: 0 5px;
-    border: 2px solid #fffaf4;
+    border: 2px solid var(--app-surface);
     border-radius: var(--control-pill-radius);
     font-size: 0.64rem;
     font-weight: 900;

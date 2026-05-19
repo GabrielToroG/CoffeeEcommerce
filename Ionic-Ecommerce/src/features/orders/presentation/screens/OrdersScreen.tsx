@@ -6,7 +6,7 @@ import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/
 import { DesktopTopHeaderView } from '../../../../core/presentation/components/organisms/desktopTopHeader/DesktopTopHeaderView';
 import { MobileTopHeaderView } from '../../../../core/presentation/components/organisms/mobileTopHeader/MobileTopHeaderView';
 import { useCart } from '../../../cart/presentation/hooks/useCart';
-import { useOrders } from '../../composition/useOrders';
+import { useOrders } from '../../composition/OrdersModule';
 import './OrdersScreen.css';
 
 function formatCurrency(value: number) {

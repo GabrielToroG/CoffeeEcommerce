@@ -9,18 +9,27 @@ import { createGetAdminProductsUseCase } from '../domain/useCases/getAdminProduc
 import { createPutAdminProductUseCase } from '../domain/useCases/putAdminProductUseCase';
 import { createUseAdminCatalog } from '../presentation/hooks/useAdminCatalog';
 
-function createAdminCatalogDataSource() {
-  switch (runtimeConfig.adminCatalogDataSource) {
-    case 'remote':
-      return remoteAdminCatalogDataSource;
-    default:
-      return remoteAdminCatalogDataSource;
-  }
+// MARK: Data
+export function resolveAdminCatalogData() {
+  const dataSource = (() => {
+    switch (runtimeConfig.adminCatalogDataSource) {
+      case 'remote':
+        return remoteAdminCatalogDataSource;
+      default:
+        return remoteAdminCatalogDataSource;
+    }
+  })();
+  const repository = createRemoteAdminCatalogRepository(dataSource);
+
+  return {
+    dataSource,
+    repository,
+  };
 }
 
-function createAdminCatalogUseCases(): AdminCatalogUseCasesProtocol {
-  const dataSource = createAdminCatalogDataSource();
-  const repository = createRemoteAdminCatalogRepository(dataSource);
+// MARK: Domain
+export function resolveAdminCatalogDomain(): AdminCatalogUseCasesProtocol {
+  const { repository } = resolveAdminCatalogData();
 
   return {
     getAdminCatalogOptionsUseCase: createGetAdminCatalogOptionsUseCase(repository),
@@ -31,4 +40,26 @@ function createAdminCatalogUseCases(): AdminCatalogUseCasesProtocol {
   };
 }
 
-export const useAdminCatalog = createUseAdminCatalog(createAdminCatalogUseCases());
+// MARK: Presentation
+export function resolveAdminCatalogPresentation(useCases: AdminCatalogUseCasesProtocol) {
+  return {
+    useAdminCatalog: createUseAdminCatalog(useCases),
+  };
+}
+
+// MARK: Module
+export function useAdminCatalogModule() {
+  return {
+    resolveData: resolveAdminCatalogData,
+    resolveDomain: resolveAdminCatalogDomain,
+    resolvePresentation: () => resolveAdminCatalogPresentation(resolveAdminCatalogDomain()),
+  };
+}
+
+// MARK: Public Hook
+export function useAdminCatalog() {
+  const { resolvePresentation } = useAdminCatalogModule();
+  const { useAdminCatalog: useAdminCatalogHook } = resolvePresentation();
+
+  return useAdminCatalogHook();
+}

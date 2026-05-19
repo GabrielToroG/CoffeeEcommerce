@@ -17,11 +17,13 @@ export function BaseSelectFieldView({
   options,
 }: BaseSelectFieldProps) {
   const labelId = useId();
+  const inputId = useId();
 
   return (
     <div className="base-select-field">
-      <FieldLabelView id={labelId}>{label}</FieldLabelView>
+      <FieldLabelView id={labelId} htmlFor={inputId}>{label}</FieldLabelView>
       <BaseSelectView
+        inputId={inputId}
         value={value}
         onChange={onChange}
         options={options}

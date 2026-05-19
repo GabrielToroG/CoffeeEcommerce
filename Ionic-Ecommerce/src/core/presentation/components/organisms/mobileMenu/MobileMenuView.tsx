@@ -17,6 +17,22 @@ const navigationItems = [
   { label: 'Mi cuenta', path: '/account' },
 ];
 
+function isNavigationItemActive(currentPathname: string, itemPath: string) {
+  if (itemPath === '/account/addresses') {
+    return currentPathname === itemPath;
+  }
+
+  if (itemPath === '/account') {
+    return currentPathname === itemPath || currentPathname.startsWith('/account/');
+  }
+
+  if (itemPath === '/store') {
+    return currentPathname === itemPath || currentPathname.startsWith('/store/');
+  }
+
+  return currentPathname === itemPath;
+}
+
 export function MobileMenuView() {
   const location = useLocation();
 
@@ -33,21 +49,25 @@ export function MobileMenuView() {
           <strong>Navegación</strong>
         </div>
         <IonList className="mobile-menu__list" lines="none">
-          {navigationItems.map((item) => (
-            <IonMenuToggle key={item.path} autoHide>
-              <IonItem
-                button
-                routerLink={item.path}
-                routerDirection="root"
-                className={`mobile-menu__item ${
-                  location.pathname === item.path ? 'mobile-menu__item--active' : ''
-                }`}
-                aria-current={location.pathname === item.path ? 'page' : undefined}
-              >
-                <IonLabel>{item.label}</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
-          ))}
+          {navigationItems.map((item) => {
+            const isActive = isNavigationItemActive(location.pathname, item.path);
+
+            return (
+              <IonMenuToggle key={item.path} autoHide>
+                <IonItem
+                  button
+                  routerLink={item.path}
+                  routerDirection="root"
+                  className={`mobile-menu__item ${
+                    isActive ? 'mobile-menu__item--active' : ''
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <IonLabel>{item.label}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+            );
+          })}
         </IonList>
       </IonContent>
     </IonMenu>

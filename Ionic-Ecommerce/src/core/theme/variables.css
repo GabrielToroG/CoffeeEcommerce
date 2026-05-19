@@ -62,6 +62,55 @@ http://ionicframework.com/docs/theming/ */
   --product-grid-gap: 18px;
   --product-grid-gap-mobile: 14px;
 
+  --app-bg: #fcfaf7;
+  --app-bg-alt: #f4ebe0;
+  --app-surface: #fffaf4;
+  --app-surface-rgb: 255, 250, 244;
+  --app-surface-elevated: #ffffff;
+  --app-surface-muted: #f2e4d4;
+  --app-surface-emphasis: #2d1f19;
+  --app-surface-glass: rgba(255, 250, 244, 0.94);
+  --app-panel-bg: rgba(255, 252, 248, 0.92);
+  --app-panel-bg-strong: rgba(255, 252, 248, 0.94);
+  --app-card-bg: #fffdfa;
+  --app-card-bg-strong: #ffffff;
+  --app-card-bg-muted: #fbf6f0;
+  --app-card-bg-soft: #fffaf3;
+  --app-image-placeholder: #efe2d3;
+  --app-chip-bg: #faf4ed;
+  --app-chip-bg-strong: #f3e6d8;
+  --app-chip-text: #5f3d2e;
+  --app-overlay-light: rgba(255, 253, 249, 0.94);
+  --app-overlay-dark: rgba(34, 22, 15, 0.72);
+  --app-hero-gradient: linear-gradient(135deg, #2d1f19 0%, #5f3d2e 100%);
+  --app-hero-surface: rgba(255, 247, 238, 0.1);
+  --app-hero-text: #fff7ee;
+  --app-hero-text-muted: rgba(255, 247, 238, 0.82);
+  --app-text: #22160f;
+  --app-text-muted: #6b5649;
+  --app-text-soft: #8c5d3c;
+  --app-border: rgba(95, 61, 46, 0.16);
+  --app-border-strong: rgba(95, 61, 46, 0.26);
+  --app-accent: #6f462b;
+  --app-accent-strong: #5d3923;
+  --app-accent-contrast: #fff7ee;
+  --app-accent-soft: #f4d7b6;
+  --app-accent-soft-hover: #e9c89f;
+  --app-interactive-subtle: rgba(95, 61, 46, 0.08);
+  --app-interactive-subtle-hover: rgba(95, 61, 46, 0.14);
+  --app-interactive-elevated: rgba(255, 250, 244, 0.82);
+  --app-interactive-elevated-hover: rgba(242, 228, 212, 0.96);
+  --app-badge-bg: #2d1f19;
+  --app-badge-text: #fff7ee;
+  --app-input-bg: #ffffff;
+  --app-danger: #a42828;
+  --app-danger-bg: rgba(149, 48, 34, 0.1);
+  --app-success: #396048;
+  --app-success-bg: rgba(52, 111, 72, 0.13);
+  --app-gradient-page:
+    radial-gradient(circle at top left, rgba(212, 164, 116, 0.22), transparent 30%),
+    linear-gradient(180deg, #f6efe6 0%, #fcfaf7 48%, #f2e6d9 100%);
+
   --ion-color-primary: #6f462b;
   --ion-color-primary-rgb: 111, 70, 43;
   --ion-color-primary-contrast: #fff7ee;
@@ -69,12 +118,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-shade: #623e26;
   --ion-color-primary-tint: #7d5840;
 
-  --ion-background-color: #fcfaf7;
+  --ion-background-color: var(--app-bg);
   --ion-background-color-rgb: 252, 250, 247;
-  --ion-text-color: #22160f;
+  --ion-text-color: var(--app-text);
   --ion-text-color-rgb: 34, 22, 15;
-  --ion-toolbar-background: rgba(252, 250, 247, 0.9);
-  --ion-toolbar-color: #22160f;
+  --ion-toolbar-background: var(--app-surface-glass);
+  --ion-toolbar-color: var(--app-text);
   --ion-font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
 
   --app-mobile-bottom-nav-height: calc(64px + env(safe-area-inset-bottom));
@@ -88,13 +137,127 @@ http://ionicframework.com/docs/theming/ */
   );
 }
 
+:root.theme-dark {
+  --shadow-s: 0 14px 32px rgba(0, 0, 0, 0.28);
+  --shadow-m: 0 22px 48px rgba(0, 0, 0, 0.34);
+  --shadow-m-soft: 0 20px 42px rgba(0, 0, 0, 0.26);
+  --shadow-floating: 0 18px 38px rgba(0, 0, 0, 0.34);
+
+  --control-focus-ring: 0 0 0 3px rgba(214, 162, 107, 0.2);
+
+  --app-bg: #15110f;
+  --app-bg-alt: #1d1714;
+  --app-surface: #201916;
+  --app-surface-rgb: 32, 25, 22;
+  --app-surface-elevated: #2a211d;
+  --app-surface-muted: #332823;
+  --app-surface-emphasis: #f4e8dc;
+  --app-surface-glass: rgba(26, 21, 18, 0.92);
+  --app-panel-bg: rgba(38, 30, 26, 0.92);
+  --app-panel-bg-strong: rgba(42, 33, 29, 0.94);
+  --app-card-bg: #241d1a;
+  --app-card-bg-strong: #2a211d;
+  --app-card-bg-muted: #2d241f;
+  --app-card-bg-soft: #2f251f;
+  --app-image-placeholder: #332823;
+  --app-chip-bg: #332823;
+  --app-chip-bg-strong: #3c2f29;
+  --app-chip-text: #dfc1a6;
+  --app-overlay-light: rgba(47, 37, 31, 0.96);
+  --app-overlay-dark: rgba(14, 10, 9, 0.72);
+  --app-hero-gradient: linear-gradient(135deg, #f0dbc5 0%, #d6a26b 100%);
+  --app-hero-surface: rgba(29, 21, 16, 0.16);
+  --app-hero-text: #1d1510;
+  --app-hero-text-muted: rgba(29, 21, 16, 0.78);
+  --app-text: #f6ede4;
+  --app-text-muted: #cfb9a7;
+  --app-text-soft: #d6a26b;
+  --app-border: rgba(214, 182, 154, 0.16);
+  --app-border-strong: rgba(214, 182, 154, 0.3);
+  --app-accent: #d6a26b;
+  --app-accent-strong: #e2b27f;
+  --app-accent-contrast: #1d1510;
+  --app-accent-soft: #3d2d24;
+  --app-accent-soft-hover: #4d392d;
+  --app-interactive-subtle: rgba(214, 162, 107, 0.12);
+  --app-interactive-subtle-hover: rgba(214, 162, 107, 0.2);
+  --app-interactive-elevated: rgba(42, 33, 29, 0.9);
+  --app-interactive-elevated-hover: rgba(58, 45, 39, 0.96);
+  --app-badge-bg: #f0dbc5;
+  --app-badge-text: #1b140f;
+  --app-input-bg: #1c1613;
+  --app-danger: #ff9a9a;
+  --app-danger-bg: rgba(255, 154, 154, 0.12);
+  --app-success: #8fd3a7;
+  --app-success-bg: rgba(143, 211, 167, 0.14);
+  --app-gradient-page:
+    radial-gradient(circle at top left, rgba(214, 162, 107, 0.12), transparent 28%),
+    linear-gradient(180deg, #171210 0%, #15110f 44%, #1e1713 100%);
+
+  --ion-color-primary: #d6a26b;
+  --ion-color-primary-rgb: 214, 162, 107;
+  --ion-color-primary-contrast: #1d1510;
+  --ion-color-primary-contrast-rgb: 29, 21, 16;
+  --ion-color-primary-shade: #bc8f5f;
+  --ion-color-primary-tint: #daad79;
+
+  --ion-background-color: var(--app-bg);
+  --ion-background-color-rgb: 21, 17, 15;
+  --ion-text-color: var(--app-text);
+  --ion-text-color-rgb: 246, 237, 228;
+  --ion-toolbar-background: var(--app-surface-glass);
+  --ion-toolbar-color: var(--app-text);
+}
+
+html,
+body {
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
 .app-route-loading {
   min-height: 100%;
   display: grid;
   place-content: center;
   gap: var(--control-inline-gap);
   padding: var(--space-xl);
-  background: #fcfaf7;
-  color: #5d463a;
+  background: var(--app-bg);
+  color: var(--app-text-muted);
   text-align: center;
+}
+
+.app-route-not-found {
+  min-height: 100%;
+  display: grid;
+  place-content: center;
+  gap: var(--space-s);
+  padding: var(--space-xl);
+  background: var(--app-gradient-page);
+  color: var(--app-text);
+  text-align: center;
+}
+
+.app-route-not-found__eyebrow {
+  color: var(--app-text-soft);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.app-route-not-found h1 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.05;
+}
+
+.app-route-not-found p {
+  margin: 0 auto;
+  max-width: 34rem;
+  color: var(--app-text-muted);
+}
+
+.app-route-not-found__action {
+  justify-self: center;
+  margin-top: var(--space-xs);
 }

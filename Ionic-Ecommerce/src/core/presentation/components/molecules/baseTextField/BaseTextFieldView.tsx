@@ -26,13 +26,15 @@ export function BaseTextFieldView({
   rows = 4,
 }: BaseTextFieldProps) {
   const labelId = useId();
+  const inputId = useId();
   const wrapperClassName = className ? `base-text-field ${className}` : 'base-text-field';
 
   return (
     <div className={wrapperClassName}>
-      <FieldLabelView id={labelId}>{label}</FieldLabelView>
+      <FieldLabelView id={labelId} htmlFor={inputId}>{label}</FieldLabelView>
       {multiline ? (
         <BaseTextareaView
+          inputId={inputId}
           rows={rows}
           value={value}
           onChange={onChange}
@@ -41,6 +43,7 @@ export function BaseTextFieldView({
         />
       ) : (
         <BaseInputView
+          inputId={inputId}
           type={type}
           value={value}
           onChange={onChange}

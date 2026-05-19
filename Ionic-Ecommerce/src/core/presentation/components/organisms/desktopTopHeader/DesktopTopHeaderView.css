@@ -1,13 +1,13 @@
 .desktop-app-header {
-  --background: rgba(252, 246, 239, 0.94);
-  border-bottom: 1px solid rgba(95, 61, 46, 0.12);
+  --background: var(--app-surface-glass);
+  border-bottom: 1px solid var(--app-border);
   backdrop-filter: blur(18px);
 }
 
 .desktop-app-header ion-toolbar {
-  --background: rgba(252, 246, 239, 0.94);
+  --background: var(--app-surface-glass);
   --border-color: transparent;
-  --color: #22160f;
+  --color: var(--app-text);
   --min-height: 68px;
 }
 
@@ -30,10 +30,10 @@
 
 .desktop-top-header__brand-button {
   --background: transparent;
-  --background-activated: rgba(95, 61, 46, 0.08);
-  --background-hover: rgba(95, 61, 46, 0.08);
+  --background-activated: var(--app-interactive-subtle);
+  --background-hover: var(--app-interactive-subtle);
   --box-shadow: none;
-  --color: #22160f;
+  --color: var(--app-text);
   --padding-bottom: 8px;
   --padding-end: 0;
   --padding-start: 0;
@@ -48,15 +48,15 @@
 
 .desktop-top-header__location {
   flex: 0 1 auto;
-  --background: #fffaf3;
-  --background-activated: #efe0cf;
-  --background-hover: #f5eadf;
-  --border-color: rgba(95, 61, 46, 0.16);
+  --background: var(--app-interactive-elevated);
+  --background-activated: var(--app-interactive-elevated-hover);
+  --background-hover: var(--app-interactive-elevated-hover);
+  --border-color: var(--app-border);
   --border-radius: var(--radius-s);
   --border-style: solid;
   --border-width: 1px;
   --box-shadow: none;
-  --color: #4f372c;
+  --color: var(--app-text-muted);
   --padding-bottom: 8px;
   --padding-end: 12px;
   --padding-start: 12px;
@@ -81,13 +81,17 @@
   width: 18px;
   height: 18px;
   margin-right: var(--control-icon-text-gap);
-  color: #8c5d3c;
+  color: var(--app-text-soft);
 }
 
 .desktop-top-header__location span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.desktop-top-header__theme-toggle {
+  flex: 0 0 auto;
 }
 
 .desktop-top-header__account {
@@ -100,12 +104,12 @@
 
 .desktop-top-header__cart {
   flex: 0 0 auto;
-  --background: #f4d7b6;
-  --background-activated: #e9c89f;
-  --background-hover: #e9c89f;
+  --background: var(--app-accent-soft);
+  --background-activated: var(--app-accent-soft-hover);
+  --background-hover: var(--app-accent-soft-hover);
   --border-radius: var(--radius-m);
   --box-shadow: none;
-  --color: #22160f;
+  --color: var(--app-accent-contrast);
   --padding-bottom: 9px;
   --padding-end: 14px;
   --padding-start: 14px;
@@ -135,8 +139,8 @@
 }
 
 .desktop-top-header__cart-badge {
-  --background: #2d1f19;
-  --color: #fff7ee;
+  --background: var(--app-badge-bg);
+  --color: var(--app-badge-text);
   display: inline-grid;
   margin-left: var(--control-badge-gap);
   min-width: 24px;

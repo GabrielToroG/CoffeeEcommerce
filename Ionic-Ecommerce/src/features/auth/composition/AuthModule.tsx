@@ -11,18 +11,27 @@ import { createPostLocalRegisterUserUseCase } from '../domain/useCases/postLocal
 import { createPatchLocalDefaultAddressUseCase } from '../domain/useCases/patchLocalDefaultAddressUseCase';
 import { createAuthProvider } from '../presentation/hooks/useAuth';
 
-function createAuthDataSource() {
-  switch (runtimeConfig.authDataSource) {
-    case 'local':
-      return localAuthDataSource;
-    default:
-      return localAuthDataSource;
-  }
+// MARK: Data
+export function resolveAuthData() {
+  const dataSource = (() => {
+    switch (runtimeConfig.authDataSource) {
+      case 'local':
+        return localAuthDataSource;
+      default:
+        return localAuthDataSource;
+    }
+  })();
+  const repository = createLocalAuthRepository(dataSource);
+
+  return {
+    dataSource,
+    repository,
+  };
 }
 
-function createAuthUseCases(): AuthUseCasesProtocol {
-  const dataSource = createAuthDataSource();
-  const repository = createLocalAuthRepository(dataSource);
+// MARK: Domain
+export function resolveAuthDomain(): AuthUseCasesProtocol {
+  const { repository } = resolveAuthData();
 
   return {
     getLocalCurrentUserUseCase: createGetLocalCurrentUserUseCase(repository),
@@ -35,4 +44,24 @@ function createAuthUseCases(): AuthUseCasesProtocol {
   };
 }
 
-export const AuthProvider = createAuthProvider(createAuthUseCases());
+// MARK: Presentation
+export function resolveAuthPresentation(useCases: AuthUseCasesProtocol) {
+  return {
+    AuthProvider: createAuthProvider(useCases),
+  };
+}
+
+// MARK: Module
+export function useAuthModule() {
+  return {
+    resolveData: resolveAuthData,
+    resolveDomain: resolveAuthDomain,
+    resolvePresentation: () => resolveAuthPresentation(resolveAuthDomain()),
+  };
+}
+
+// MARK: Public Provider
+const { resolvePresentation } = useAuthModule();
+const { AuthProvider } = resolvePresentation();
+
+export { AuthProvider };

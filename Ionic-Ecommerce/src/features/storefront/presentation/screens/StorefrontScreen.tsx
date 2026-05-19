@@ -14,7 +14,7 @@ import { MobileTopHeaderView } from '../../../../core/presentation/components/or
 import { useCart } from '../../../cart/presentation/hooks/useCart';
 import type { StorefrontProductModel } from '../../domain/entities/StorefrontProductModel';
 import { useHistory } from 'react-router-dom';
-import { useStorefront } from '../../composition/useStorefront';
+import { useStorefront } from '../../composition/StorefrontModule';
 import { CollectionSectionView } from '../components/CollectionSectionView';
 import { ProductFiltersView } from '../components/ProductFiltersView';
 import { matchesIntensityRange } from '../utils/matchesIntensityRange';

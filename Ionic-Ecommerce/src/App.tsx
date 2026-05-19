@@ -1,6 +1,7 @@
 import { IonApp, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AuthProvider } from './features/auth/composition/AuthProvider';
+import { ThemeProvider } from './core/theme/ThemeProvider';
+import { AuthProvider } from './features/auth/composition/AuthModule';
 import { CartProvider } from './features/cart/composition/CartProvider';
 import { AppRouter } from './core/router/AppRouter';
 import { MobileMenuView } from './core/presentation/components/organisms/mobileMenu/MobileMenuView';
@@ -31,7 +32,6 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './core/theme/variables.css';
@@ -40,15 +40,17 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <AuthProvider>
-        <CartProvider>
-          <MobileMenuView />
-          <AppRouter />
-          <MobileAppNavigationView />
-        </CartProvider>
-      </AuthProvider>
-    </IonReactRouter>
+    <ThemeProvider>
+      <IonReactRouter>
+        <AuthProvider>
+          <CartProvider>
+            <MobileMenuView />
+            <AppRouter />
+            <MobileAppNavigationView />
+          </CartProvider>
+        </AuthProvider>
+      </IonReactRouter>
+    </ThemeProvider>
   </IonApp>
 );
 

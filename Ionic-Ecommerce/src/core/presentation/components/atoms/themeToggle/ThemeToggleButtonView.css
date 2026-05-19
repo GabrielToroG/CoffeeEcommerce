@@ -1,0 +1,25 @@
+.theme-toggle-button {
+  --background: var(--app-interactive-elevated);
+  --background-activated: var(--app-interactive-elevated-hover);
+  --background-focused: var(--app-interactive-elevated-hover);
+  --background-hover: var(--app-interactive-elevated-hover);
+  --border-color: var(--app-border);
+  --border-radius: var(--radius-m);
+  --border-style: solid;
+  --border-width: 1px;
+  --box-shadow: none;
+  --color: var(--app-text);
+  --padding-bottom: 0;
+  --padding-end: 0;
+  --padding-start: 0;
+  --padding-top: 0;
+  margin: 0;
+  min-height: var(--tap-target-m);
+  width: var(--tap-target-m);
+  height: var(--tap-target-m);
+}
+
+.theme-toggle-button ion-icon {
+  width: 20px;
+  height: 20px;
+}

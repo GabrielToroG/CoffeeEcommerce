@@ -1,10 +1,10 @@
 .base-textarea {
   width: 100%;
-  --background: #fff;
-  --border-color: rgba(95, 61, 46, 0.18);
+  --background: var(--app-input-bg);
+  --border-color: var(--app-border);
   --border-radius: var(--control-field-radius);
   --border-width: 1px;
-  --color: #26170f;
+  --color: var(--app-text);
   --padding-bottom: var(--control-field-padding-block);
   --padding-end: var(--control-field-padding-inline);
   --padding-start: var(--control-field-padding-inline);
@@ -15,6 +15,6 @@
 }
 
 .base-textarea.ion-focused {
-  border-color: rgba(140, 93, 60, 0.5);
+  border-color: var(--app-border-strong);
   box-shadow: var(--control-focus-ring);
 }

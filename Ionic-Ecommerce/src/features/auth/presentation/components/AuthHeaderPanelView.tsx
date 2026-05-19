@@ -1,5 +1,6 @@
 import { IonButton, IonButtons, IonModal, IonPopover } from '@ionic/react';
 import { useEffect, useId, useState } from 'react';
+import type { FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { BaseTextFieldView } from '../../../../core/presentation/components/molecules/baseTextField/BaseTextFieldView';
 import { useAuth } from '../hooks/useAuth';
@@ -64,7 +65,9 @@ export function AuthHeaderPanelView() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (mode === 'login') {
       const didLogin = await login({
         email: form.email,
@@ -99,7 +102,7 @@ export function AuthHeaderPanelView() {
   };
 
   const authPanel = (
-    <div className="auth-panel" role="dialog" aria-labelledby={titleId}>
+    <form className="auth-panel" role="dialog" aria-labelledby={titleId} onSubmit={(event) => void handleSubmit(event)}>
       <span className="auth-panel__eyebrow">
         {mode === 'login' ? 'Accede a tu cuenta' : 'Nueva cuenta'}
       </span>
@@ -161,9 +164,8 @@ export function AuthHeaderPanelView() {
           Cancelar
         </IonButton>
         <IonButton
-          type="button"
+          type="submit"
           className="auth-panel__primary"
-          onClick={() => void handleSubmit()}
           disabled={isLoading || isSubmitting}
         >
           {isSubmitting
@@ -183,7 +185,7 @@ export function AuthHeaderPanelView() {
           ? 'No tienes cuenta? Registrate'
           : 'Ya tienes cuenta? Inicia sesion'}
       </IonButton>
-    </div>
+    </form>
   );
 
   return (

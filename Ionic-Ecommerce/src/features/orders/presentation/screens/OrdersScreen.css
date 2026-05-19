@@ -1,10 +1,8 @@
 .orders-shell {
   min-height: 100%;
   padding: 24px 16px 40px;
-  background:
-    radial-gradient(circle at top left, rgba(212, 164, 116, 0.18), transparent 24%),
-    linear-gradient(180deg, #fbf5ef 0%, #f7efe7 48%, #efe2d3 100%);
-  color: #26170f;
+  background: var(--app-gradient-page);
+  color: var(--app-text);
 }
 
 .orders-layout {
@@ -17,7 +15,7 @@
 .orders-empty {
   padding: var(--surface-panel-padding);
   border-radius: var(--surface-panel-radius);
-  background: rgba(255, 252, 248, 0.94);
+  background: var(--app-panel-bg-strong);
   box-shadow: var(--surface-panel-shadow);
 }
 
@@ -28,7 +26,7 @@
   letter-spacing: 0.08em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #8c5d3c;
+  color: var(--app-text-soft);
 }
 
 .orders-main h1,
@@ -40,7 +38,7 @@
 .orders-main p,
 .orders-empty p {
   margin: 0;
-  color: #6f5648;
+  color: var(--app-text-muted);
 }
 
 .orders-list {
@@ -54,8 +52,8 @@
   gap: var(--section-gap);
   padding: 20px;
   border-radius: var(--surface-card-radius-large);
-  background: #fff;
-  border: 1px solid rgba(95, 61, 46, 0.1);
+  background: var(--app-card-bg-strong);
+  border: 1px solid var(--app-border);
 }
 
 .orders-card__header,
@@ -80,7 +78,7 @@
 }
 
 .orders-card__meta span {
-  color: #6f5648;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
 }
 
@@ -92,7 +90,7 @@
 
 .orders-card__info span,
 .orders-sidebar__stats span {
-  color: #7a6257;
+  color: var(--app-text-muted);
   font-size: 0.88rem;
 }
 
@@ -108,7 +106,7 @@
   align-items: center;
   padding: var(--surface-card-padding);
   border-radius: var(--radius-l);
-  background: #fbf6f0;
+  background: var(--app-card-bg-muted);
 }
 
 .orders-item img {
@@ -124,7 +122,7 @@
 }
 
 .orders-item span {
-  color: #6f5648;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
 }
 
@@ -154,17 +152,17 @@
 }
 
 .orders-button--primary {
-  --background: #2d1f19;
-  --background-activated: #4a3328;
-  --background-hover: #4a3328;
-  --color: #fff7ee;
+  --background: var(--app-accent);
+  --background-activated: var(--app-accent-strong);
+  --background-hover: var(--app-accent-strong);
+  --color: var(--app-accent-contrast);
 }
 
 .orders-button--secondary {
-  --background: #ecd4bb;
-  --background-activated: #dfc3a5;
-  --background-hover: #dfc3a5;
-  --color: #2b1d15;
+  --background: var(--app-surface-muted);
+  --background-activated: var(--app-accent-soft);
+  --background-hover: var(--app-accent-soft);
+  --color: var(--app-text);
 }
 
 @media (min-width: 960px) {

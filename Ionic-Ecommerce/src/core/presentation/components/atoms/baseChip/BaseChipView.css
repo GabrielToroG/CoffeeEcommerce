@@ -5,10 +5,10 @@
   max-width: 100%;
   height: 28px;
   padding: 0 var(--space-xs);
-  border: 1px solid rgba(95, 61, 46, 0.1);
+  border: 1px solid var(--app-border);
   border-radius: var(--radius-s);
-  background: #faf4ed;
-  color: #5f3d2e;
+  background: var(--app-chip-bg);
+  color: var(--app-chip-text);
   font-size: 0.72rem;
   font-weight: 700;
   line-height: 1;

@@ -14,7 +14,7 @@ import { MobileTopHeaderView } from '../../../../core/presentation/components/or
 import { useHistory } from 'react-router-dom';
 import { CartSummaryView } from '../../../cart/presentation/components/CartSummaryView';
 import { useCart } from '../../../cart/presentation/hooks/useCart';
-import { useCheckout } from '../../composition/useCheckout';
+import { useCheckout } from '../../composition/CheckoutModule';
 import './CheckoutScreen.css';
 
 type CheckoutStep = 'customer' | 'delivery' | 'payment' | 'review';
@@ -81,6 +81,22 @@ export function CheckoutScreen() {
     checkoutSteps
       .slice(0, stepIndex)
       .every((step) => completedStepsById[step.id]);
+
+  const resolveNextSummaryStep = (): CheckoutStep => {
+    if (!completedStepsById.customer) {
+      return 'customer';
+    }
+
+    if (!completedStepsById.delivery) {
+      return 'delivery';
+    }
+
+    if (!completedStepsById.payment) {
+      return 'payment';
+    }
+
+    return 'review';
+  };
 
   useEffect(() => {
     if (!shouldFocusStepRef.current) {
@@ -377,8 +393,14 @@ export function CheckoutScreen() {
                 onAddProduct={increaseProductQuantity}
                 onRemoveProduct={removeProductFromCart}
                 onCheckout={() => {
+                  const nextStep = resolveNextSummaryStep();
+
+                  if (nextStep === currentStep) {
+                    return;
+                  }
+
                   shouldFocusStepRef.current = true;
-                  setCurrentStep('review');
+                  setCurrentStep(nextStep);
                 }}
                 showCheckoutAction={false}
               />

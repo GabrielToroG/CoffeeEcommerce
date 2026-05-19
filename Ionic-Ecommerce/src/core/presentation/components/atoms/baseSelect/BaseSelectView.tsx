@@ -7,6 +7,7 @@ export type BaseSelectViewOption = {
 };
 
 type BaseSelectProps = {
+  inputId?: string;
   value: string;
   onChange: (value: string) => void;
   options: BaseSelectViewOption[];
@@ -14,6 +15,7 @@ type BaseSelectProps = {
 };
 
 export function BaseSelectView({
+  inputId,
   value,
   onChange,
   options,
@@ -21,6 +23,7 @@ export function BaseSelectView({
 }: BaseSelectProps) {
   return (
     <IonSelect
+      id={inputId}
       className="base-select"
       value={value}
       interface="popover"

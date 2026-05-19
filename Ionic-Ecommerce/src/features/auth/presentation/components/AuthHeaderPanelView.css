@@ -6,10 +6,10 @@
 
 .auth-header__signed {
   --background: transparent;
-  --background-activated: rgba(45, 31, 25, 0.08);
-  --background-hover: rgba(45, 31, 25, 0.08);
+  --background-activated: var(--app-interactive-subtle);
+  --background-hover: var(--app-interactive-subtle);
   --box-shadow: none;
-  --color: #2d1f19;
+  --color: var(--app-text);
   --padding-end: 8px;
   --padding-start: 8px;
   display: flex;
@@ -29,12 +29,12 @@
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #8c5d3c;
+  color: var(--app-text-soft);
 }
 
 .auth-header__identity strong {
   font-size: 0.92rem;
-  color: #2d1f19;
+  color: var(--app-text);
 }
 
 .auth-popover {
@@ -42,7 +42,7 @@
 }
 
 .auth-modal {
-  --background: #fffaf4;
+  --background: var(--app-surface);
   --border-radius: var(--radius-l) var(--radius-l) 0 0;
 }
 
@@ -50,15 +50,15 @@
   display: grid;
   gap: var(--section-gap);
   padding: 20px;
-  background: #fffaf4;
-  color: #26170f;
+  background: var(--app-surface);
+  color: var(--app-text);
 }
 
 .auth-panel__eyebrow {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #8c5d3c;
+  color: var(--app-text-soft);
 }
 
 .auth-panel h2 {
@@ -68,7 +68,7 @@
 
 .auth-panel p {
   margin: 0;
-  color: #6f5648;
+  color: var(--app-text-muted);
 }
 
 .auth-panel__form {
@@ -88,10 +88,10 @@
 }
 
 .auth-panel__field .base-input {
-  border: 1px solid rgba(95, 61, 46, 0.18);
+  border: 1px solid var(--app-border);
   border-radius: var(--control-field-radius);
-  background: #ffffff;
-  color: #26170f;
+  background: var(--app-input-bg);
+  color: var(--app-text);
 }
 
 .auth-panel__actions {
@@ -120,24 +120,24 @@
 }
 
 .auth-panel__primary {
-  --background: #2d1f19;
-  --background-activated: #4a3328;
-  --background-hover: #4a3328;
-  --color: #fff7ee;
+  --background: var(--app-accent);
+  --background-activated: var(--app-accent-strong);
+  --background-hover: var(--app-accent-strong);
+  --color: var(--app-accent-contrast);
 }
 
 .auth-panel__secondary {
-  --background: #ecd4bb;
-  --background-activated: #dfc3a5;
-  --background-hover: #dfc3a5;
-  --color: #2b1d15;
+  --background: var(--app-surface-muted);
+  --background-activated: var(--app-accent-soft);
+  --background-hover: var(--app-accent-soft);
+  --color: var(--app-text);
 }
 
 .auth-panel__toggle {
   --background: transparent;
   --background-activated: transparent;
   --background-hover: transparent;
-  --color: #7b5135;
+  --color: var(--app-text-soft);
   --padding-bottom: 0;
   --padding-end: 0;
   --padding-start: 0;
@@ -147,7 +147,7 @@
 }
 
 .auth-panel__error {
-  color: #a42828;
+  color: var(--app-danger);
   font-weight: 600;
 }
 
@@ -161,15 +161,15 @@
 }
 
 .auth-account__menu-item {
-  --background: #ffffff;
-  --background-activated: #fbf3ea;
-  --background-hover: #fbf3ea;
-  --border-color: rgba(95, 61, 46, 0.1);
+  --background: var(--app-surface-elevated);
+  --background-activated: var(--app-surface-muted);
+  --background-hover: var(--app-surface-muted);
+  --border-color: var(--app-border);
   --border-radius: var(--control-field-radius);
   --border-style: solid;
   --border-width: 1px;
   --box-shadow: none;
-  --color: #26170f;
+  --color: var(--app-text);
   --padding-bottom: 12px;
   --padding-end: 14px;
   --padding-start: 14px;
@@ -196,15 +196,15 @@
 }
 
 .auth-account__menu-item span {
-  color: #6f5648;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
 }
 
 .auth-account__menu-count {
   padding: 4px 10px;
   border-radius: var(--control-pill-radius);
-  background: #f3e3d3;
-  color: #7b5135;
+  background: var(--app-accent-soft);
+  color: var(--app-accent-contrast);
   font-size: 0.8rem;
   font-weight: 700;
 }
@@ -212,9 +212,9 @@
 .auth-account__empty {
   padding: 12px 14px;
   border-radius: var(--control-field-radius);
-  background: #fff;
-  color: #6f5648;
-  border: 1px dashed rgba(95, 61, 46, 0.22);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-muted);
+  border: 1px dashed var(--app-border-strong);
 }
 
 @media (max-width: 767px) {

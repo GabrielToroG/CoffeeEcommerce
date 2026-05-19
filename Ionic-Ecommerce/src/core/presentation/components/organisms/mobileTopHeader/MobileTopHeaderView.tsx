@@ -9,6 +9,7 @@ import {
 import { bagHandleOutline, menuOutline } from 'ionicons/icons';
 import { useRef } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ThemeToggleButtonView } from '../../atoms/themeToggle/ThemeToggleButtonView';
 import './MobileTopHeaderView.css';
 
 type MobileTopHeaderViewProps = {
@@ -57,6 +58,8 @@ export function MobileTopHeaderView({
           >
             Brew Market
           </IonButton>
+
+          <ThemeToggleButtonView className="mobile-top-header__theme-toggle" />
 
           <IonButton
             type="button"

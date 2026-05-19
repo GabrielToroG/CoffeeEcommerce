@@ -8,7 +8,7 @@ import { deriveSelectedDeliveryAddressLabelUseCase } from '../../../auth/domain/
 import { useCart } from '../../../cart/presentation/hooks/useCart';
 import { AdminProductEditorView } from '../components/AdminProductEditorView';
 import { AdminProductListView } from '../components/AdminProductListView';
-import { useAdminCatalog } from '../../composition/useAdminCatalog';
+import { useAdminCatalog } from '../../composition/AdminCatalogModule';
 import './AdminCatalogScreen.css';
 
 export function AdminCatalogScreen() {
